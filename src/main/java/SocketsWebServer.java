@@ -11,7 +11,7 @@ import java.net.Socket;
  * <p>
  * A Simple HttpServer that returns Static HTML Pages and Images on HTTP requests
  */
-public class SocketsWebServer {
+public class SocketsWebServer implements WebServer{
 
     private static final String ROOT_DIRECTORY = System.getProperty("user.dir") + File.separator + "SimpleWebserver"; //TODO Make this configurable
     private static final int SERVER_PORT = 8080; //TODO Make this configurable
