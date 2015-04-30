@@ -10,7 +10,7 @@ import java.io.OutputStream;
  */
 public class Response {
 
-    private static final int BUFFER_SIZE = 2048;
+    private static final int BUFFER_SIZE = 8096;
     private Request request;
     private OutputStream output;
     private String rootDirectory;
@@ -28,9 +28,8 @@ public class Response {
     public void sendStaticResource() throws IOException {
         byte[] bytes = new byte[BUFFER_SIZE];
         FileInputStream fis = null;
-
         try {
-            File file = new File(rootDirectory, request.getUri());
+            File file = new File(rootDirectory , request.getUri());
             if (file.exists()) {
                 fis = new FileInputStream(file);
                 int ch = fis.read(bytes, 0, BUFFER_SIZE);

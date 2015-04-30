@@ -27,7 +27,7 @@ public class SocketsWebServer implements WebServer {
     }
 
     public SocketsWebServer() {
-        this(System.getProperty("user.dir") + File.separator + "SimpleWebserver", 8080);
+        this(System.getProperty("user.home") + File.separator + "SimpleWebserver", 8080);
     }
 
     public void await() {
