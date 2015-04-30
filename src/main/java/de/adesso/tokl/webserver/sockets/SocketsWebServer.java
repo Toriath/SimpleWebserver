@@ -31,7 +31,7 @@ public class SocketsWebServer implements WebServer {
     }
 
     public void await() {
-        running = true; // http://www.onjava.com/pub/a/onjava/2003/04/23/java_webserver.html?page=2
+        running = true;
         ServerSocket serverSocket = null;
 
         try {
