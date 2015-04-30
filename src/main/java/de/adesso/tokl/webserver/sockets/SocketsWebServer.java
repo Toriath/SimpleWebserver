@@ -4,8 +4,6 @@ import de.adesso.tokl.webserver.WebServer;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -35,7 +33,7 @@ public class SocketsWebServer implements WebServer {
         ServerSocket serverSocket = null;
 
         try {
-            serverSocket = new ServerSocket(serverPort, 1, InetAddress.getByName("127.0.0.1"));
+            serverSocket = new ServerSocket(serverPort, 5, InetAddress.getByName("127.0.0.1"));
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
@@ -44,31 +42,17 @@ public class SocketsWebServer implements WebServer {
         // Loop waiting for a request
         while (running) {
             Socket socket = null;
-            InputStream input = null;
-            OutputStream output = null;
+
             try {
                 socket = serverSocket.accept();
-                input = socket.getInputStream();
-                output = socket.getOutputStream();
-
-                // create Request object and parse
-                Request request = new Request(input);
-                request.parse();
-
-                // create Response object
-                Response response = new Response(output, rootDirectory);
-                response.setRequest(request);
-                response.sendStaticResource();
-
-                // Close the socket
-                socket.close();
-
-
-            } catch (Exception e) {
+                Connection connection = new Connection(socket, rootDirectory);
+                new Thread(connection).start();
+            } catch (IOException e) {
                 e.printStackTrace();
                 continue;
             }
         }
+
     }
 
 
