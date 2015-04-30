@@ -39,6 +39,7 @@ public class Response {
     public void sendStaticResource() throws IOException {
 
         FileInputStream fis = null;
+        if(request.getUri() == null) return;
         try {
             File file = new File(rootDirectory, request.getUri());
             if (file.exists()) {
