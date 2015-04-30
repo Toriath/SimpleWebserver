@@ -9,6 +9,7 @@ import java.io.InputStream;
 public class Request {
 
     private InputStream input;
+    private String uri;
 
     public Request(InputStream input) {
 
@@ -34,7 +35,7 @@ public class Request {
         }
 
         System.out.print(request.toString());
-        String uri = parseUri(request.toString());
+        uri = parseUri(request.toString());
     }
 
     private String parseUri(String requestString) {
@@ -48,5 +49,9 @@ public class Request {
         }
 
         return null;
+    }
+
+    public String getUri() {
+        return uri;
     }
 }
