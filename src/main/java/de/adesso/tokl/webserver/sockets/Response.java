@@ -13,10 +13,12 @@ public class Response {
     private static final int BUFFER_SIZE = 2048;
     private Request request;
     private OutputStream output;
+    private String rootDirectory;
 
-    public Response(OutputStream output) {
+    public Response(OutputStream output, String rootDirectory) {
 
         this.output = output;
+        this.rootDirectory = rootDirectory;
     }
 
     public void setRequest(Request request) {
@@ -28,7 +30,7 @@ public class Response {
         FileInputStream fis = null;
 
         try {
-            File file = new File(SocketsWebServer.ROOT_DIRECTORY, request.getUri());
+            File file = new File(rootDirectory, request.getUri());
             if (file.exists()) {
                 fis = new FileInputStream(file);
                 int ch = fis.read(bytes, 0, BUFFER_SIZE);

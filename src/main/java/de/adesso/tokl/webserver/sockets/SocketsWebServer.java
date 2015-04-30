@@ -56,7 +56,7 @@ public class SocketsWebServer implements WebServer {
                 request.parse();
 
                 // create Response object
-                Response response = new Response(output);
+                Response response = new Response(output, rootDirectory);
                 response.setRequest(request);
                 response.sendStaticResource();
 
@@ -70,5 +70,6 @@ public class SocketsWebServer implements WebServer {
             }
         }
     }
+
 
 }
