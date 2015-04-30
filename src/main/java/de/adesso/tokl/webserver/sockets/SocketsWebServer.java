@@ -17,16 +17,25 @@ import java.net.Socket;
  */
 public class SocketsWebServer implements WebServer {
 
-    public static final String ROOT_DIRECTORY = System.getProperty("user.dir") + File.separator + "SimpleWebserver"; //TODO Make this configurable
-    public static final int SERVER_PORT = 8080; //TODO Make this configurable
+    private String rootDirectory; //TODO Make this configurable
+    private int serverPort; //TODO Make this configurable
     private boolean running;
+
+    public SocketsWebServer(String rootDirectory, int serverPort) {
+        this.rootDirectory = rootDirectory;
+        this.serverPort = serverPort;
+    }
+
+    public SocketsWebServer() {
+        this(System.getProperty("user.dir") + File.separator + "SimpleWebserver", 8080);
+    }
 
     public void await() {
         running = true; // http://www.onjava.com/pub/a/onjava/2003/04/23/java_webserver.html?page=2
         ServerSocket serverSocket = null;
 
         try {
-            serverSocket = new ServerSocket(SERVER_PORT, 1, InetAddress.getByName("127.0.0.1"));
+            serverSocket = new ServerSocket(serverPort, 1, InetAddress.getByName("127.0.0.1"));
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
