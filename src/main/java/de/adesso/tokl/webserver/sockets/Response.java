@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Date;
 
 /**
  * Created by kloss on 30.04.2015.
@@ -32,7 +35,7 @@ public class Response {
     }
 
     /**
-     * Checks wheter or not the file exists and then either returns an error message or the file
+     * Checks whether or not the file exists and then either returns an error message or the file
      *
      * @throws IOException if the file object can not be instantiated
      */
@@ -43,6 +46,8 @@ public class Response {
         try {
             File file = new File(rootDirectory, request.getUri());
             if (file.exists()) {
+                sendHeader(request.getUri());
+
                 fis = new FileInputStream(file);
                 byte[] bytes = new byte[BUFFER_SIZE];
                 int ch = fis.read(bytes, 0, BUFFER_SIZE);
@@ -59,6 +64,20 @@ public class Response {
         } finally {
             if (fis != null) fis.close();
         }
+    }
+
+    /**
+     * Sends the HTTP header to define the Mime Tag, Date and Servername
+     * @param uri The uri of the file to send
+     * @throws IOException in case the bytes can not be written to the output stream
+     */
+    private void sendHeader(String uri) throws IOException {
+        String contentType = Files.probeContentType(Paths.get(uri));
+        byte[] httpHeaderBytes = ("HTTP/1.0 200 OK\r\n" +
+                "Content-Type: " + contentType + "\r\n" +
+                "Date: " + new Date() + "\r\n" +
+                "Server: SimpleWebserver 1.0\r\n\r\n").getBytes();
+        output.write(httpHeaderBytes);
     }
 
 
