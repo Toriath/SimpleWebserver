@@ -8,7 +8,7 @@ import java.io.OutputStream;
 /**
  * Created by kloss on 30.04.2015.
  * <p>
- * Represents a HTML reponse to a given HTML request.
+ * Represents a HTTP reponse to a given HTTP request.
  */
 public class Response {
 
