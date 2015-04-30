@@ -5,6 +5,8 @@ import java.io.InputStream;
 
 /**
  * Created by kloss on 30.04.2015.
+ *
+ * Respresents a HTTP request
  */
 public class Request {
 
