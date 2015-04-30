@@ -4,6 +4,8 @@ import de.adesso.tokl.webserver.sockets.SocketsWebServer;
 
 /**
  * Created by kloss on 30.04.2015.
+ *
+ * Startup class to initialise the Server
  */
 public class Startup {
 
