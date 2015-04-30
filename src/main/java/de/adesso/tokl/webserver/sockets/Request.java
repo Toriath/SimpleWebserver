@@ -36,7 +36,7 @@ public class Request {
             request.append((char) buffer[j]);
         }
 
-        System.out.print(request.toString());
+        System.out.print(request.toString()); //TODO Log this
         uri = parseUri(request.toString());
     }
 

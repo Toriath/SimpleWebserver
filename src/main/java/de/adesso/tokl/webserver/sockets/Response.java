@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
+
+import static java.nio.file.Files.probeContentType;
 
 /**
  * Created by kloss on 30.04.2015.
@@ -35,8 +36,7 @@ public class Response {
     }
 
     /**
-     * Checks whether or not the file exists and then either returns an error message or the file
-     *
+     * Checks whether or not the file exists and then either returns an error message or the file     *
      * @throws IOException if the file object can not be instantiated
      */
     public void sendStaticResource() throws IOException {
@@ -60,7 +60,7 @@ public class Response {
                 output.write(ERROR_MESSAGE.getBytes());
             }
         } catch (IOException ioException) {
-            System.out.println(ioException.toString());
+            System.out.println(ioException.toString()); //TODO LOG THIS
         } finally {
             if (fis != null) fis.close();
         }
@@ -72,7 +72,7 @@ public class Response {
      * @throws IOException in case the bytes can not be written to the output stream
      */
     private void sendHeader(String uri) throws IOException {
-        String contentType = Files.probeContentType(Paths.get(uri));
+        String contentType = probeContentType(Paths.get(uri));
         byte[] httpHeaderBytes = ("HTTP/1.0 200 OK\r\n" +
                 "Content-Type: " + contentType + "\r\n" +
                 "Date: " + new Date() + "\r\n" +
