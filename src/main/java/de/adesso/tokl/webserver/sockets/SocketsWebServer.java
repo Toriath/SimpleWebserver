@@ -34,6 +34,9 @@ public class SocketsWebServer implements WebServer {
         this(System.getProperty("user.home") + File.separator + "SimpleWebserver", 8080);
     }
 
+    /**
+     * Starts the Server on the configured Port and waits for requests
+     */
     public void await() {
         running = true;
         ServerSocket serverSocket = null;
