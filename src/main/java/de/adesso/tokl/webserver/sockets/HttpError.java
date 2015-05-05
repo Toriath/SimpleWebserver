@@ -10,9 +10,16 @@ public enum HttpError {
 
     ERROR_404("HTTP/1.1 404 File Not Found\r\n" +
             "Content-Type: text/html\r\n" +
-            "Content-Length: 23\r\n" +
+            "Content-Length: 27\r\n" +
             "\r\n" +
-            "<h1>File Not Found</h1>");
+            "<h1>404 File Not Found</h1>"),
+
+    ERROR_500("HTTP/1.1 500 Internal Server Error\r\n" +
+            "Content-Type: text/html\r\n" +
+            "Content-Length: 25\r\n" +
+            "\r\n" +
+            "<h1>500 Internal Server Error</h1>");
+
 
     private String errorMessage;
 
