@@ -23,8 +23,10 @@ class Connection implements Runnable {
         this.rootDirectory = rootDirectory;
     }
 
+    /**
+     * Creates a Request and sends a Response to the client
+     */
     public void run() {
-
         try {
             Request request = new Request(socket.getInputStream());
             sendResponseForRequest(socket.getOutputStream(), request);
@@ -33,7 +35,6 @@ class Connection implements Runnable {
         } catch (IOException e) {
             logger.catching(e);
         }
-
     }
 
     private void sendResponseForRequest(OutputStream output, Request request) throws IOException {
