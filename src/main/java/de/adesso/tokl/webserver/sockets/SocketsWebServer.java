@@ -21,11 +21,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class SocketsWebServer implements WebServer {
 
-    private Logger logger = LogManager.getLogger(SocketsWebServer.class);
+    private final Logger logger = LogManager.getLogger(SocketsWebServer.class);
     private final ExecutorService executor;
     private final String rootDirectory; //TODO Make this configurable
     private final int serverPort; //TODO Make this configurable
-    private boolean running;
+    private ServerSocket serverSocket;
 
     public SocketsWebServer(String rootDirectory, int serverPort) {
         this.rootDirectory = rootDirectory;
@@ -43,30 +43,33 @@ public class SocketsWebServer implements WebServer {
     public void await() {
         logger.trace("Server is booting...");
 
-        running = true;
-        ServerSocket serverSocket = null;
+        boolean running = true;
 
+        setupServerSocket();
+
+        while (running) {
+            Socket socket;
+            try {
+                logger.trace("Server is waiting for requests...");
+                socket = serverSocket.accept();
+                logger.info("Request recieved from " + socket.getInetAddress());
+
+                Connection connection = new Connection(socket, rootDirectory);
+                executor.execute(connection);
+            } catch (IOException e) {
+                logger.catching(e);
+            }
+        }
+
+    }
+
+    private void setupServerSocket() {
         try {
             serverSocket = new ServerSocket(serverPort, 20, InetAddress.getByName("127.0.0.1"));
         } catch (IOException e) {
             logger.catching(e);
             System.exit(1);
         }
-
-        while (running) {
-            Socket socket = null;
-            try {
-                logger.trace("Server is waiting for requests...");
-                socket = serverSocket.accept();
-                logger.info("Request recieved from " + socket.getInetAddress());
-                Connection connection = new Connection(socket, rootDirectory);
-                executor.execute(connection);
-            } catch (IOException e) {
-                logger.catching(e);
-                continue;
-            }
-        }
-
     }
 
 

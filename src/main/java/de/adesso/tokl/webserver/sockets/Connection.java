@@ -10,12 +10,14 @@ import java.net.Socket;
 
 /**
  * Created by kloss on 30.04.2015.
+ *
+ * Represents an ongoing connection to a requesting client
  */
-public class Connection implements Runnable {
+class Connection implements Runnable {
 
-    Logger logger = LogManager.getLogger(Connection.class);
-    Socket socket;
-    private String rootDirectory;
+    private final Logger logger = LogManager.getLogger(Connection.class);
+    private final Socket socket;
+    private final String rootDirectory;
 
     public Connection(Socket socket, String rootDirectory) {
         this.socket = socket;
@@ -24,8 +26,8 @@ public class Connection implements Runnable {
 
     public void run() {
 
-        InputStream input = null;
-        OutputStream output = null;
+        InputStream input;
+        OutputStream output;
 
         try {
             input = socket.getInputStream();

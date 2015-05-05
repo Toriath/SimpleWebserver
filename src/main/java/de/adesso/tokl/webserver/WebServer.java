@@ -7,6 +7,6 @@ package de.adesso.tokl.webserver;
  */
 public interface WebServer {
 
-    public void await();
+    void await();
 
 }

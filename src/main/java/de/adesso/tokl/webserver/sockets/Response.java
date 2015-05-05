@@ -17,9 +17,9 @@ import static java.nio.file.Files.probeContentType;
  * <p>
  * Represents a HTTP reponse to a given HTTP request.
  */
-public class Response {
+class Response {
 
-    Logger logger = LogManager.getLogger(Response.class);
+    private final Logger logger = LogManager.getLogger(Response.class);
 
     private static final String ERROR_MESSAGE = "HTTP/1.1 404 File Not Found\r\n" +
             "Content-Type: text/html\r\n" +
@@ -28,8 +28,8 @@ public class Response {
             "<h1>File Not Found</h1>";
     private static final int BUFFER_SIZE = 2048;
     private Request request;
-    private OutputStream output;
-    private String rootDirectory;
+    private final OutputStream output;
+    private final String rootDirectory;
 
     public Response(OutputStream output, String rootDirectory) {
         this.output = output;

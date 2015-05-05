@@ -7,7 +7,7 @@ import de.adesso.tokl.webserver.sockets.SocketsWebServer;
  * <p>
  * Startup class to initialise the Server
  */
-public class Startup {
+class Startup {
 
     public static void main(String[] args) {
 
