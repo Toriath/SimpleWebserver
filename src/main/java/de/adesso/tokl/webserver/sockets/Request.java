@@ -41,7 +41,7 @@ class Request {
             request.append((char) buffer[j]);
         }
 
-        logger.info(request.toString());
+
         uri = parseUri(request.toString());
     }
 
