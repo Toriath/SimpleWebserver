@@ -33,16 +33,10 @@ class Connection implements Runnable {
             input = socket.getInputStream();
             output = socket.getOutputStream();
 
-            // create Request object and parse
             Request request = new Request(input);
-            request.parse();
 
-            // create Response object
-            Response response = new Response(output, rootDirectory);
-            response.setRequest(request);
-            response.sendStaticResource();
+            sendResponseForRequest(output, request);
 
-            // Close the socket
             socket.close();
 
         } catch (IOException e) {
@@ -50,5 +44,13 @@ class Connection implements Runnable {
         }
 
     }
+
+    private void sendResponseForRequest(OutputStream output, Request request) throws IOException {
+        Response response = new Response(output, rootDirectory);
+        response.setRequest(request);
+        response.sendStaticResource();
+    }
+
+
 
 }
