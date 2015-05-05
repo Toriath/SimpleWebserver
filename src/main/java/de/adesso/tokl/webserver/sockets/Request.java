@@ -19,11 +19,11 @@ class Request {
     private String uri;
 
     public Request(InputStream input) {
-
         this.input = input;
+        parse();
     }
 
-    public void parse() {
+    private void parse() {
         // Read a set of characters from the socket
         StringBuilder request = new StringBuilder(2048);
         int i;
@@ -41,7 +41,7 @@ class Request {
             request.append((char) buffer[j]);
         }
 
-        System.out.print(request.toString()); //TODO Log this
+        logger.info(request.toString());
         uri = parseUri(request.toString());
     }
 
