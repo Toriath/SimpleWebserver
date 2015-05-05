@@ -1,5 +1,8 @@
 package de.adesso.tokl.webserver.sockets;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,6 +18,8 @@ import static java.nio.file.Files.probeContentType;
  * Represents a HTTP reponse to a given HTTP request.
  */
 public class Response {
+
+    Logger logger = LogManager.getLogger(Response.class);
 
     private static final String ERROR_MESSAGE = "HTTP/1.1 404 File Not Found\r\n" +
             "Content-Type: text/html\r\n" +
@@ -59,8 +64,8 @@ public class Response {
             } else {
                 output.write(ERROR_MESSAGE.getBytes());
             }
-        } catch (IOException ioException) {
-            System.out.println(ioException.toString()); //TODO LOG THIS
+        } catch (IOException e) {
+            logger.catching(e);
         } finally {
             if (fis != null) fis.close();
         }

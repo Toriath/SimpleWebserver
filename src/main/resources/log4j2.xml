@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN" monitorInterval="30">
+<Configuration status="info" monitorInterval="30">
     <Appenders>
-        <File name="ErrorLog" fileName="${sys:logfile.dir}errors.log">
+        <File name="logfile" fileName="webserver.log">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
     </Appenders>
     <Loggers>
-        <Root level="error">
-            <AppenderRef ref="ErrorLog"/>
+        <Root level="info">
+            <AppenderRef ref="logfile"/>
         </Root>
     </Loggers>
 </Configuration>

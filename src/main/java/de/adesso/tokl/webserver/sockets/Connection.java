@@ -1,5 +1,8 @@
 package de.adesso.tokl.webserver.sockets;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,6 +13,7 @@ import java.net.Socket;
  */
 public class Connection implements Runnable {
 
+    Logger logger = LogManager.getLogger(Connection.class);
     Socket socket;
     private String rootDirectory;
 
@@ -40,7 +44,7 @@ public class Connection implements Runnable {
             socket.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.catching(e);
         }
 
     }

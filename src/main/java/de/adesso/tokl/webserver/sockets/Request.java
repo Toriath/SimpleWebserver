@@ -1,5 +1,8 @@
 package de.adesso.tokl.webserver.sockets;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -9,6 +12,8 @@ import java.io.InputStream;
  * Respresents a HTTP request
  */
 public class Request {
+
+    Logger logger = LogManager.getLogger(Request.class);
 
     private InputStream input;
     private String uri;
@@ -28,7 +33,7 @@ public class Request {
             i = input.read(buffer);
         }
         catch (IOException e) {
-            e.printStackTrace();
+            logger.catching(e);
             i = -1;
         }
 
