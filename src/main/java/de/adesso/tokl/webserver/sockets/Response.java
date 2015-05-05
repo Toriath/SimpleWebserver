@@ -19,12 +19,11 @@ import static java.nio.file.Files.probeContentType;
  */
 class Response {
 
-    private final Logger logger = LogManager.getLogger(Response.class);
-
     private static final int BUFFER_SIZE = 2048;
-    private Request request;
+    private final Logger logger = LogManager.getLogger(Response.class);
     private final OutputStream output;
     private final String rootDirectory;
+    private Request request;
 
     public Response(OutputStream output, String rootDirectory) {
         this.output = output;
@@ -37,45 +36,58 @@ class Response {
 
     /**
      * Checks whether or not the file exists and then either returns an error message or the file     *
+     *
      * @throws IOException if the file input stream can not be closed
      */
     public void sendStaticResource() throws IOException {
 
-        FileInputStream fis = null;
-        if(request.getUri() == null) return;
+        if (request.getUri() == null) return;
         try {
             File file = new File(rootDirectory, request.getUri());
             if (file.exists()) {
                 sendHeader(request.getUri());
-
-                fis = new FileInputStream(file);
-                byte[] bytes = new byte[BUFFER_SIZE];
-                int ch = fis.read(bytes, 0, BUFFER_SIZE);
-
-                while (ch != -1) {
-                    output.write(bytes, 0, ch);
-                    ch = fis.read(bytes, 0, BUFFER_SIZE);
-                }
+                sendFile(file);
             } else {
-                sendError404();
+                sendError(HttpError.ERROR_404);
             }
         } catch (IOException e) {
             logger.catching(e);
-        } finally {
-            if (fis != null) fis.close();
+            sendError(HttpError.ERROR_500);
         }
     }
 
     /**
+     * Sends the given file to the client
+     *
+     * @param file The file to send to the client via http
+     * @throws IOException in case the file can not be send to the client
+     */
+    private void sendFile(File file) throws IOException {
+        FileInputStream fis = new FileInputStream(file);
+        byte[] bytes = new byte[BUFFER_SIZE];
+        int ch = fis.read(bytes, 0, BUFFER_SIZE);
+
+        while (ch != -1) {
+            output.write(bytes, 0, ch);
+            ch = fis.read(bytes, 0, BUFFER_SIZE);
+        }
+
+        fis.close();
+
+    }
+
+    /**
      * Send a 404 error page to the requesting client
+     *
      * @throws IOException when is is not possible to write to the output stream
      */
-    private void sendError404() throws IOException {
-        output.write(HttpError.ERROR_404.getBytes());
+    private void sendError(HttpError error) throws IOException {
+        output.write(error.getBytes());
     }
 
     /**
      * Sends the HTTP header to define the Mime Tag, Date and Servername
+     *
      * @param uri The uri of the file to send
      * @throws IOException in case the bytes can not be written to the output stream
      */
