@@ -4,7 +4,6 @@ import de.adesso.tokl.webserver.WebServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -21,22 +20,17 @@ import java.util.concurrent.TimeUnit;
  */
 public class SocketsWebServer implements WebServer {
 
-    private static final String DEFAULT_ROOT_DIR = System.getProperty("user.home") + File.separator + "SimpleWebserver";
     private final ExecutorService executor = new ThreadPoolExecutor(20, 20, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(20));
     private final Logger logger = LogManager.getLogger(SocketsWebServer.class);
-    private final String rootDirectory; //TODO Make this configurable
-    private final int serverPort; //TODO Make this configurable
+    private final String rootDirectory;
+    private final int serverPort;
     private ServerSocket serverSocket;
     private boolean running;
 
-    public SocketsWebServer(String rootDirectory, int serverPort) {
-        this.rootDirectory = rootDirectory;
-        this.serverPort = serverPort;
+    public SocketsWebServer(ServerConfiguration config) {
+        this.rootDirectory = config.getRootDirectory();
+        this.serverPort = config.getServerPort();
         setupServerSocket();
-    }
-
-    public SocketsWebServer() {
-        this(DEFAULT_ROOT_DIR, 8080);
     }
 
     /**

@@ -1,5 +1,6 @@
 package de.adesso.tokl.webserver.sockets;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +13,8 @@ import java.util.Properties;
  */
 public class ServerConfiguration {
 
+    private static final String DEFAULT_ROOT_DIR = System.getProperty("user.home") + File.separator + "SimpleWebserver";
+
     Properties properties = new Properties();
 
     public ServerConfiguration(String pathToPropertiesFile) throws IOException {
@@ -23,7 +26,11 @@ public class ServerConfiguration {
         }
     }
 
-    private String getConfigByName(String name) {
-        return properties.getProperty(name);
+    public int getServerPort() {
+        return Integer.parseInt(properties.getProperty("port", "8080"));
+    }
+
+    public String getRootDirectory(){
+           return properties.getProperty("rootDirectory", DEFAULT_ROOT_DIR);
     }
 }
