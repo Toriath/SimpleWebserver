@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="info" monitorInterval="30">
     <Appenders>
-        <File name="logfile" fileName="${app.root}/log/webserver.log">
+        <File name="logfile" fileName="log/webserver.log">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
     </Appenders>
