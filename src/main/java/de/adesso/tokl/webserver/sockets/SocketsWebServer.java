@@ -26,11 +26,13 @@ public class SocketsWebServer implements WebServer {
     private final String rootDirectory; //TODO Make this configurable
     private final int serverPort; //TODO Make this configurable
     private ServerSocket serverSocket;
+    private boolean running;
 
     public SocketsWebServer(String rootDirectory, int serverPort) {
         this.rootDirectory = rootDirectory;
         this.serverPort = serverPort;
         executor = new ThreadPoolExecutor(20, 20, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(20));
+        setupServerSocket();
     }
 
     public SocketsWebServer() {
@@ -43,9 +45,7 @@ public class SocketsWebServer implements WebServer {
     public void await() {
         logger.trace("Server is booting...");
 
-        boolean running = true;
-
-        setupServerSocket();
+        running = true;
 
         while (running) {
             Socket socket;
