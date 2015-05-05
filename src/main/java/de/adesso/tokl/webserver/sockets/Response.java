@@ -37,7 +37,7 @@ class Response {
 
     /**
      * Checks whether or not the file exists and then either returns an error message or the file     *
-     * @throws IOException if the file object can not be instantiated
+     * @throws IOException if the file input stream can not be closed
      */
     public void sendStaticResource() throws IOException {
 
@@ -57,13 +57,21 @@ class Response {
                     ch = fis.read(bytes, 0, BUFFER_SIZE);
                 }
             } else {
-                output.write(HttpError.ERROR_404.getBytes());
+                sendError404();
             }
         } catch (IOException e) {
             logger.catching(e);
         } finally {
             if (fis != null) fis.close();
         }
+    }
+
+    /**
+     * Send a 404 error page to the requesting client
+     * @throws IOException when is is not possible to write to the output stream
+     */
+    private void sendError404() throws IOException {
+        output.write(HttpError.ERROR_404.getBytes());
     }
 
     /**
