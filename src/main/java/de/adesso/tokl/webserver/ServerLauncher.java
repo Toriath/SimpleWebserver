@@ -45,4 +45,12 @@ class ServerLauncher {
         }
     }
 
+    private void setServerHomeAsSystemProperty() throws IOException {
+        File homeDir = new File(ServerConfiguration.SERVER_HOME_DIR);
+        if (!homeDir.exists()) {
+            homeDir.mkdirs();
+        }
+        System.setProperty("app.root", ServerConfiguration.SERVER_HOME_DIR);
+    }
+
 }

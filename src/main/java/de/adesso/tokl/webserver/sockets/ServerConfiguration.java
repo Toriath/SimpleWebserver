@@ -10,8 +10,9 @@ import java.util.Properties;
  */
 public class ServerConfiguration {
 
-    public static final String USER_PROPERTIES_PATH = System.getProperty("user.home") + File.separator + "SimpleWebserver" + File.separator + "serverConfig.properties";
-    private static final String DEFAULT_ROOT_DIR = System.getProperty("user.home") + File.separator + "SimpleWebserver" + File.separator + "rootDir";
+    public static final String SERVER_HOME_DIR = System.getProperty("user.home") + File.separator + "SimpleWebserver";
+    public static final String USER_PROPERTIES_PATH = SERVER_HOME_DIR + File.separator + "serverConfig.properties";
+    private static final String DEFAULT_ROOT_DIR = SERVER_HOME_DIR + File.separator + "rootDir";
     Properties properties = new Properties();
 
     public ServerConfiguration() throws IOException {
