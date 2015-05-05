@@ -21,11 +21,6 @@ class Response {
 
     private final Logger logger = LogManager.getLogger(Response.class);
 
-    private static final String ERROR_MESSAGE = "HTTP/1.1 404 File Not Found\r\n" +
-            "Content-Type: text/html\r\n" +
-            "Content-Length: 23\r\n" +
-            "\r\n" +
-            "<h1>File Not Found</h1>";
     private static final int BUFFER_SIZE = 2048;
     private Request request;
     private final OutputStream output;
@@ -62,7 +57,7 @@ class Response {
                     ch = fis.read(bytes, 0, BUFFER_SIZE);
                 }
             } else {
-                output.write(ERROR_MESSAGE.getBytes());
+                output.write(HttpError.ERROR_404.getBytes());
             }
         } catch (IOException e) {
             logger.catching(e);
