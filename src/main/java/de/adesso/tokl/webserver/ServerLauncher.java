@@ -16,10 +16,6 @@ import java.nio.file.Paths;
  */
 class ServerLauncher {
 
-    public static void main(String[] args) {
-        new ServerLauncher().launch();
-    }
-
     public void launch(){
 
         ServerConfiguration config = null;
