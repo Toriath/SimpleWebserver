@@ -21,8 +21,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class SocketsWebServer implements WebServer {
 
+    private static final String DEFAULT_ROOT_DIR = System.getProperty("user.home") + File.separator + "SimpleWebserver";
+    private final ExecutorService executor = new ThreadPoolExecutor(20, 20, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(20));
     private final Logger logger = LogManager.getLogger(SocketsWebServer.class);
-    private final ExecutorService executor;
     private final String rootDirectory; //TODO Make this configurable
     private final int serverPort; //TODO Make this configurable
     private ServerSocket serverSocket;
@@ -31,12 +32,11 @@ public class SocketsWebServer implements WebServer {
     public SocketsWebServer(String rootDirectory, int serverPort) {
         this.rootDirectory = rootDirectory;
         this.serverPort = serverPort;
-        executor = new ThreadPoolExecutor(20, 20, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(20));
         setupServerSocket();
     }
 
     public SocketsWebServer() {
-        this(System.getProperty("user.home") + File.separator + "SimpleWebserver", 8080);
+        this(DEFAULT_ROOT_DIR, 8080);
     }
 
     /**
