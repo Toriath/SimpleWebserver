@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
@@ -26,17 +25,9 @@ class Connection implements Runnable {
 
     public void run() {
 
-        InputStream input;
-        OutputStream output;
-
         try {
-            input = socket.getInputStream();
-            output = socket.getOutputStream();
-
-            Request request = new Request(input);
-
-            sendResponseForRequest(output, request);
-
+            Request request = new Request(socket.getInputStream());
+            sendResponseForRequest(socket.getOutputStream(), request);
             socket.close();
 
         } catch (IOException e) {
