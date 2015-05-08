@@ -1,7 +1,6 @@
 package de.adesso.tokl.webserver.sockets;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -12,9 +11,9 @@ import java.net.Socket;
  *
  * Represents an ongoing connection to a requesting client
  */
+@Log4j2
 class Connection implements Runnable {
 
-    private final Logger logger = LogManager.getLogger(Connection.class);
     private final Socket socket;
     private final String rootDirectory;
 
@@ -33,7 +32,7 @@ class Connection implements Runnable {
             socket.close();
 
         } catch (IOException e) {
-            logger.catching(e);
+            log.catching(e);
         }
     }
 

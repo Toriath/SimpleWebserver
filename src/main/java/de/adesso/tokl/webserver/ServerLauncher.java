@@ -5,8 +5,7 @@ import de.adesso.tokl.webserver.sockets.configuration.CommandLineConfiguration;
 import de.adesso.tokl.webserver.sockets.configuration.DefaultConfiguration;
 import de.adesso.tokl.webserver.sockets.configuration.PropertyConfiguration;
 import de.adesso.tokl.webserver.sockets.configuration.ServerConfiguration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -18,34 +17,33 @@ import java.security.CodeSource;
  * <p>
  * Startup class to initialise the Server
  */
+@Log4j2
 class ServerLauncher {
-
-    Logger logger = LogManager.getLogger(ServerLauncher.class);
 
     public void launch(String[] args){
         ServerConfiguration config = null;
 
-        logger.trace("Checking for server configuration.");
+        log.trace("Checking for server configuration.");
 
         if(args.length != 0){
             config = new CommandLineConfiguration(args);
-            logger.info("Commandline configuration loaded!");
+            log.info("Commandline configuration loaded!");
         }
 
         File propertiesFile = getPropertiesFile();
 
         if(config == null){
-            logger.trace("No command line parameters given. Using properties instead.");
+            log.trace("No command line parameters given. Using properties instead.");
             if(propertiesFile.exists()){
                 config = new PropertyConfiguration(propertiesFile);
-                logger.info("Property configuration loaded!");
+                log.info("Property configuration loaded!");
             }
         }
 
         if(config == null){
-            logger.trace("No property file given. Using defaults instead.");
+            log.trace("No property file given. Using defaults instead.");
             config = new DefaultConfiguration();
-            logger.info("Default configuration loaded!");
+            log.info("Default configuration loaded!");
         }
 
         WebServer server = new SocketsWebServer(config);
@@ -63,7 +61,7 @@ class ServerLauncher {
                 URL url = new URL(src.getLocation(), "serverConfig.properties");
                 file = new File(url.getPath());
             } catch (MalformedURLException e) {
-                logger.catching(e);
+                log.catching(e);
             }
         }
         return file;

@@ -1,18 +1,16 @@
 package de.adesso.tokl.webserver.sockets.configuration;
 
-import de.adesso.tokl.webserver.sockets.SocketsWebServer;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.cli.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Created by kloss on 08.05.2015.
  *
  * A Server configuration based on command line arguments
  */
+@Log4j2
 public class CommandLineConfiguration implements ServerConfiguration {
 
-    private final Logger logger = LogManager.getLogger(SocketsWebServer.class);
     private int serverPort;
     private String rootDirectory;
 
@@ -25,8 +23,8 @@ public class CommandLineConfiguration implements ServerConfiguration {
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
-            logger.error("Error while parsing commandline parameters.");
-            logger.catching(e);
+            log.error("Error while parsing commandline parameters.");
+            log.catching(e);
             System.exit(1);
         }
 

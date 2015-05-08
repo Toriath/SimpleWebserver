@@ -1,7 +1,7 @@
 package de.adesso.tokl.webserver.sockets;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,11 +11,11 @@ import java.io.InputStream;
  *
  * Respresents a HTTP request
  */
+@Log4j2
 class Request {
 
-    private final Logger logger = LogManager.getLogger(Request.class);
-
     private final InputStream input;
+    @Getter
     private String uri;
 
     public Request(InputStream input) {
@@ -33,7 +33,7 @@ class Request {
             i = input.read(buffer);
         }
         catch (IOException e) {
-            logger.catching(e);
+            log.catching(e);
             i = -1;
         }
 
@@ -56,9 +56,5 @@ class Request {
         }
 
         return null;
-    }
-
-    public String getUri() {
-        return uri;
     }
 }

@@ -1,7 +1,6 @@
 package de.adesso.tokl.webserver.sockets.configuration;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.*;
 import java.util.Properties;
@@ -11,9 +10,9 @@ import java.util.Properties;
  * <p>
  * The Configuration for a SimpleWebServer
  */
+@Log4j2
 public class PropertyConfiguration implements ServerConfiguration {
 
-    private Logger logger = LogManager.getLogger(PropertyConfiguration.class);
     Properties properties = new Properties();
 
     public PropertyConfiguration(File propertiesFile){
@@ -25,12 +24,12 @@ public class PropertyConfiguration implements ServerConfiguration {
                 properties.load(inputStream);
             }
         } catch (FileNotFoundException e) {
-            logger.catching(e);
-            logger.error("The given properties file could not be found.");
+            log.catching(e);
+            log.error("The given properties file could not be found.");
             System.exit(1);
         } catch (IOException e) {
-            logger.catching(e);
-            logger.error("Failed to read the properties file.");
+            log.catching(e);
+            log.error("Failed to read the properties file.");
             System.exit(1);
         }
     }

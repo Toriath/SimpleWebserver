@@ -1,7 +1,6 @@
 package de.adesso.tokl.webserver.sockets;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,10 +16,10 @@ import static java.nio.file.Files.probeContentType;
  * <p>
  * Represents a HTTP reponse to a given HTTP request.
  */
+@Log4j2
 class Response {
 
     private static final int BUFFER_SIZE = 2048;
-    private final Logger logger = LogManager.getLogger(Response.class);
     private final OutputStream output;
     private final String rootDirectory;
     private Request request;
@@ -65,7 +64,7 @@ class Response {
             sendHeader(request.getUri());
             sendFile(fis);
         } else {
-            logger.error("Requested file was not found: " + file.getPath());
+            log.error("Requested file was not found: " + file.getPath());
             sendError(HttpError.ERROR_404);
         }
     }
