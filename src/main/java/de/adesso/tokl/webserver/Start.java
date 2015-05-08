@@ -6,7 +6,7 @@ package de.adesso.tokl.webserver;
 public class Start {
 
     public static void main(String[] args) {
-        new ServerLauncher().launch();
+        new ServerLauncher().launch(args);
     }
 
 }

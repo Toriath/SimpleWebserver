@@ -5,6 +5,7 @@ import de.adesso.tokl.webserver.sockets.configuration.ServerConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -31,21 +32,34 @@ public class SocketsWebServer implements WebServer {
     public SocketsWebServer(ServerConfiguration config) {
         this.rootDirectory = config.getRootDirectory();
         this.serverPort = config.getServerPort();
+        logConfiguration();
+        createDirectories();
         setupServerSocket();
+    }
+
+    private void logConfiguration() {
+        logger.info("Server port set to: " + serverPort);
+        logger.info("Root directory set to: " + rootDirectory);
+    }
+
+    private void createDirectories() {
+        logger.trace("Server is creating needed directories");
+        File rootDir = new File(rootDirectory);
+        rootDir.mkdirs();
     }
 
     /**
      * Starts the Server on the configured Port and waits for requests
      */
     public void await() {
-        logger.trace("Server is booting...");
+        logger.trace("Server is starting up");
 
         running = true;
 
         while (running) {
             Socket socket;
             try {
-                logger.trace("Server is waiting for requests...");
+                logger.trace("Waiting for requests...");
                 socket = serverSocket.accept();
                 logger.info("Request recieved from " + socket.getInetAddress());
 

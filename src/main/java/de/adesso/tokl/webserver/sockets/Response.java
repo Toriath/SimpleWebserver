@@ -44,26 +44,39 @@ class Response {
         if (request.getUri() == null) return;
         try {
             File file = new File(rootDirectory, request.getUri());
-            if (file.exists()) {
-                sendHeader(request.getUri());
-                sendFile(file);
-            } else {
-                sendError(HttpError.ERROR_404);
-            }
+            file = redirectToIndex(file);
+            sendResponse(file);
         } catch (IOException e) {
             logger.catching(e);
             sendError(HttpError.ERROR_500);
         }
     }
 
+    private File redirectToIndex(File file) {
+        if(file.isDirectory()){
+            file = new File(file.getPath() + File.separator + "index.html");
+        }
+        return file;
+    }
+
+    private void sendResponse(File file) throws IOException {
+        if (file.exists()) {
+            FileInputStream fis = new FileInputStream(file);
+            sendHeader(request.getUri());
+            sendFile(fis);
+        } else {
+            sendError(HttpError.ERROR_404);
+        }
+    }
+
     /**
      * Sends the given file to the client
      *
-     * @param file The file to send to the client via http
+     * @param fis The file input stream to send to the client via http
      * @throws IOException in case the file can not be send to the client
      */
-    private void sendFile(File file) throws IOException {
-        FileInputStream fis = new FileInputStream(file);
+    private void sendFile(FileInputStream fis) throws IOException {
+
         byte[] bytes = new byte[BUFFER_SIZE];
         int ch = fis.read(bytes, 0, BUFFER_SIZE);
 
@@ -93,10 +106,10 @@ class Response {
      */
     private void sendHeader(String uri) throws IOException {
         String contentType = probeContentType(Paths.get(uri));
-        byte[] httpHeaderBytes = ("HTTP/1.0 200 OK\r\n" +
+        byte[] httpHeaderBytes = ("HTTP/1.1 200 OK\r\n" +
                 "Content-Type: " + contentType + "\r\n" +
                 "Date: " + new Date() + "\r\n" +
-                "Server: SimpleWebserver 1.0\r\n\r\n").getBytes();
+                "Server: SimpleWebserver 1.1\r\n\r\n").getBytes();
         output.write(httpHeaderBytes);
     }
 

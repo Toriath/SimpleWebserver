@@ -25,24 +25,27 @@ class ServerLauncher {
     public void launch(String[] args){
         ServerConfiguration config = null;
 
-        logger.info("Checking for server configuration.");
+        logger.trace("Checking for server configuration.");
 
         if(args.length != 0){
             config = new CommandLineConfiguration(args);
+            logger.info("Commandline configuration loaded!");
         }
 
         File propertiesFile = getPropertiesFile();
 
         if(config == null){
-            logger.info("No command line parameters given. Using properties instead.");
-            if(propertiesFile != null){
+            logger.trace("No command line parameters given. Using properties instead.");
+            if(propertiesFile.exists()){
                 config = new PropertyConfiguration(propertiesFile);
+                logger.info("Property configuration loaded!");
             }
         }
 
         if(config == null){
-            logger.info("No property file given. Using defaults instead.");
+            logger.trace("No property file given. Using defaults instead.");
             config = new DefaultConfiguration();
+            logger.info("Default configuration loaded!");
         }
 
         WebServer server = new SocketsWebServer(config);

@@ -10,3 +10,6 @@ Commandline Arguments:
 Properties File (Name = serverConfig.properties)
     port = 8080 : Sets the server port to the specified number. Default is 8080.
     rootDirectory = C:/users/home/rootDir : Sets the root directory for the server to look for files. Default is USERHOME/SimpleWebserver
+
+
+Logfiles will be created in the current working directory!

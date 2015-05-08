@@ -8,7 +8,7 @@ import java.io.File;
 public class DefaultConfiguration implements ServerConfiguration {
 
     public static final int DEFAULT_SERVER_PORT = 8080;
-    public static final String DEFAULT_ROOT_DIR = System.getProperty("user.home") + File.separator + "SimpleWebserver" ;
+    public static final String DEFAULT_ROOT_DIR = System.getProperty("user.home") + File.separator + "SimpleWebserver" + File.separator ;
 
 
     public int getServerPort() {

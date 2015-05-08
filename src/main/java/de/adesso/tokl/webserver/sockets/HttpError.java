@@ -14,9 +14,9 @@ public enum HttpError {
             "\r\n" +
             "<h1>404 File Not Found</h1>"),
 
-    ERROR_500("HTTP/1.1 500 Internal Server Error\r\n" +
+    ERROR_500("HTTP/1.1 500 Internal Server Error" +
             "Content-Type: text/html\r\n" +
-            "Content-Length: 25\r\n" +
+            "Content-Length: 34\r\n" +
             "\r\n" +
             "<h1>500 Internal Server Error</h1>");
 
