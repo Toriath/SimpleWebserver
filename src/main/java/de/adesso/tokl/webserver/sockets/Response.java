@@ -42,12 +42,12 @@ class Response {
     public void sendStaticResource() throws IOException {
 
         if (request.getUri() == null) return;
+        File file = null;
         try {
-            File file = new File(rootDirectory, request.getUri());
+            file = new File(rootDirectory, request.getUri());
             file = redirectToIndex(file);
             sendResponse(file);
         } catch (IOException e) {
-            logger.catching(e);
             sendError(HttpError.ERROR_500);
         }
     }
@@ -65,6 +65,7 @@ class Response {
             sendHeader(request.getUri());
             sendFile(fis);
         } else {
+            logger.error("Requested file was not found: " + file.getPath());
             sendError(HttpError.ERROR_404);
         }
     }
