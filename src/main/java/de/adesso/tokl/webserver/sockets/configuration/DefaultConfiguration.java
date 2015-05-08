@@ -4,6 +4,8 @@ import java.io.File;
 
 /**
  * Created by kloss on 08.05.2015.
+ *
+ * The Default configuration for the Webserver.
  */
 public class DefaultConfiguration implements ServerConfiguration {
 

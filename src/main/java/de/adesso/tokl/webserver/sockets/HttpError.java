@@ -3,7 +3,7 @@ package de.adesso.tokl.webserver.sockets;
 /**
  * Created by kloss on 05.05.2015.
  *
- * Represents the most important errorpages for the HTTPprotocol
+ * Represents the most important errorpages for the HTTProtocol
  */
 public enum HttpError {
 
