@@ -1,6 +1,7 @@
 package de.adesso.tokl.webserver.sockets;
 
 import de.adesso.tokl.webserver.WebServer;
+import de.adesso.tokl.webserver.sockets.configuration.ServerConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
