@@ -6,7 +6,7 @@
 
     <groupId>de.adesso.tokl</groupId>
     <artifactId>SimpleWebserver</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -35,5 +35,12 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources/export</directory>
+                <targetPath>${basedir}/target</targetPath>
+            </resource>
+        </resources>
+    </build>
 </project>

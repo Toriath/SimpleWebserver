@@ -39,7 +39,7 @@ class Response {
     public void sendStaticResource() throws IOException {
 
         if (request.getUri() == null) return;
-        File file = null;
+        File file;
         try {
             file = new File(rootDirectory, request.getUri());
             file = redirectToIndex(file);
@@ -107,9 +107,10 @@ class Response {
         byte[] httpHeaderBytes = ("HTTP/1.1 200 OK\r\n" +
                 "Content-Type: " + contentType + "\r\n" +
                 "Date: " + new Date() + "\r\n" +
-                "Server: SimpleWebserver 1.1\r\n\r\n").getBytes();
+                "Server: SimpleWebserver 1.0\r\n\r\n").getBytes();
         output.write(httpHeaderBytes);
     }
+
 
 
 }
