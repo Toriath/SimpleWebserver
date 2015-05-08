@@ -41,7 +41,7 @@ class ServerLauncher {
         }
 
         if (config == null) {
-            log.trace("No configuration found. ");
+            log.trace("No configuration found. Falling back to default settings.");
             config = new DefaultConfiguration();
             log.info("Default configuration loaded!");
         }
