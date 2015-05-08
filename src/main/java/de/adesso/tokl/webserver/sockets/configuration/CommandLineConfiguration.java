@@ -5,16 +5,28 @@ import org.apache.commons.cli.*;
 
 /**
  * Created by kloss on 08.05.2015.
- *
+ * <p>
  * A Server configuration based on command line arguments
  */
 @Log4j2
 public class CommandLineConfiguration implements ServerConfiguration {
 
+
+    /**
+     * The configured server port.
+     */
     private int serverPort;
+    /**
+     * The configured root directory path.
+     */
     private String rootDirectory;
 
-    public CommandLineConfiguration(String[] args){
+    /**
+     * Constructor the CommandLineConfigurations.
+     *
+     * @param args the command line agrument array
+     */
+    public CommandLineConfiguration(final String... args) {
         Options options = createOptions();
 
         CommandLineParser parser = new BasicParser();
@@ -23,9 +35,7 @@ public class CommandLineConfiguration implements ServerConfiguration {
         try {
             cmd = parser.parse(options, args);
         } catch (ParseException e) {
-            log.error("Error while parsing commandline parameters.");
-            log.catching(e);
-            System.exit(1);
+            throw new ConfigurationException("Could not parse the given command line arguments!");
         }
 
         setServerPort(cmd);
@@ -33,6 +43,11 @@ public class CommandLineConfiguration implements ServerConfiguration {
 
     }
 
+    /**
+     * Creates the Option model for all available command line parameters.
+     *
+     * @return The Option model
+     */
     private Options createOptions() {
         Options options = new Options();
         options.addOption("p", true, "the server port");
@@ -40,7 +55,12 @@ public class CommandLineConfiguration implements ServerConfiguration {
         return options;
     }
 
-    private void setRootDir(CommandLine cmd) {
+    /**
+     * Checks whether the root dir was set as argument or not. Then decides to use argument or default.
+     *
+     * @param cmd the parsed command line
+     */
+    private void setRootDir(final CommandLine cmd) {
         if (cmd.hasOption('r')) {
             String rootDir = cmd.getOptionValue('r');
             rootDirectory = rootDir;
@@ -49,11 +69,20 @@ public class CommandLineConfiguration implements ServerConfiguration {
         }
     }
 
-    public int getServerPort() {
+    /**
+     * @return The server port
+     * @see ServerConfiguration#getServerPort()
+     */
+    public final int getServerPort() {
         return serverPort;
     }
 
-    private void setServerPort(CommandLine cmd) {
+    /**
+     * Checks whether the server port was set as argument or not. Then decides to use argument or default.
+     *
+     * @param cmd the parsed command line
+     */
+    private void setServerPort(final CommandLine cmd) {
         if (cmd.hasOption('p')) {
             String portString = cmd.getOptionValue('p');
             int port = Integer.parseInt(portString);
@@ -63,7 +92,11 @@ public class CommandLineConfiguration implements ServerConfiguration {
         }
     }
 
-    public String getRootDirectory() {
+    /**
+     * @return the root directory
+     * @see ServerConfiguration#getRootDirectory()
+     */
+    public final String getRootDirectory() {
         return rootDirectory;
     }
 }

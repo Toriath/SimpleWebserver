@@ -15,7 +15,7 @@ public class PropertyConfiguration implements ServerConfiguration {
 
     Properties properties = new Properties();
 
-    public PropertyConfiguration(File propertiesFile){
+    public PropertyConfiguration(File propertiesFile) {
 
         InputStream inputStream = null;
         try {
@@ -24,13 +24,10 @@ public class PropertyConfiguration implements ServerConfiguration {
                 properties.load(inputStream);
             }
         } catch (FileNotFoundException e) {
-            log.catching(e);
-            log.error("The given properties file could not be found.");
-            System.exit(1);
+            throw new ConfigurationException("The given properties file could not be found.");
+
         } catch (IOException e) {
-            log.catching(e);
-            log.error("Failed to read the properties file.");
-            System.exit(1);
+            throw new ConfigurationException("Failed to read the properties file.");
         }
     }
 
