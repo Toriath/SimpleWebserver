@@ -11,6 +11,7 @@ import java.io.InputStream;
  *
  * Respresents a HTTP request
  */
+
 @Log4j2
 class Request {
 

@@ -1,5 +1,6 @@
 package de.adesso.tokl.webserver.sockets;
 
+import lombok.Setter;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
@@ -22,15 +23,12 @@ class Response {
     private static final int BUFFER_SIZE = 2048;
     private final OutputStream output;
     private final String rootDirectory;
+    @Setter
     private Request request;
 
     public Response(OutputStream output, String rootDirectory) {
         this.output = output;
         this.rootDirectory = rootDirectory;
-    }
-
-    public void setRequest(Request request) {
-        this.request = request;
     }
 
     /**
