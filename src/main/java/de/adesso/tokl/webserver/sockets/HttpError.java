@@ -24,7 +24,7 @@ public enum HttpError {
 
 
 
-    private String errorMessage;
+    private final String errorMessage;
 
     /**
      * Constructor to provide values for the enum

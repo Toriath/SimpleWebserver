@@ -60,7 +60,7 @@ class ServerLauncher {
      * Searches for a property file next to the jar
      * @return the property file as file or null if the properties file does not exist.
      */
-    public File getPropertiesFile() {
+    private File getPropertiesFile() {
         File file = null;
         CodeSource src = PropertyConfiguration.class.getProtectionDomain().getCodeSource();
         if (src != null) {

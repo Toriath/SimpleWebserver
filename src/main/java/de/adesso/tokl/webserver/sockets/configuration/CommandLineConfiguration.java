@@ -57,8 +57,7 @@ public class CommandLineConfiguration implements ServerConfiguration {
      */
     private void setRootDir(final CommandLine cmd) {
         if (cmd.hasOption('r')) {
-            String rootDir = cmd.getOptionValue('r');
-            rootDirectory = rootDir;
+            rootDirectory = cmd.getOptionValue('r');
         } else {
             rootDirectory = DefaultConfiguration.DEFAULT_ROOT_DIR;
         }
@@ -82,8 +81,7 @@ public class CommandLineConfiguration implements ServerConfiguration {
     private void setServerPort(final CommandLine cmd) {
         if (cmd.hasOption('p')) {
             String portString = cmd.getOptionValue('p');
-            int port = Integer.parseInt(portString);
-            serverPort = port;
+            serverPort = Integer.parseInt(portString);
         } else {
             serverPort = DefaultConfiguration.DEFAULT_SERVER_PORT;
         }

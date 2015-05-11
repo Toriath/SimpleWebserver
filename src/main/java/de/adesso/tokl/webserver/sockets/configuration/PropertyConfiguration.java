@@ -14,7 +14,7 @@ import java.util.Properties;
 public class PropertyConfiguration implements ServerConfiguration {
 
 
-    private Properties properties = new Properties();
+    private final Properties properties = new Properties();
 
     /**
      * Constructor to create a configuration from a given properties File

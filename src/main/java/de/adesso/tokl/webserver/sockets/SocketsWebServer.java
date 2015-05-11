@@ -33,7 +33,7 @@ public class SocketsWebServer implements WebServer {
      * Creates a webserver wich uses the given configuration
      * @param config the configuration for the server
      */
-    public SocketsWebServer(ServerConfiguration config) {
+    public SocketsWebServer(final ServerConfiguration config) {
         this.rootDirectory = config.getRootDirectory();
         this.serverPort = config.getServerPort();
         logConfiguration();
@@ -53,7 +53,7 @@ public class SocketsWebServer implements WebServer {
      * Creates the directories for the server.
      */
     private void createDirectories() {
-        log.trace("Server is creating needed directories");
+        log.trace("Server is creating needed directorintellij zeilenies");
         File rootDir = new File(rootDirectory);
         rootDir.mkdirs();
     }
@@ -72,10 +72,9 @@ public class SocketsWebServer implements WebServer {
             try {
                 log.trace("Waiting for requests...");
                 socket = serverSocket.accept();
-                log.info("Request recieved from " + socket.getInetAddress());
-
-                Connection connection = new Connection(socket, rootDirectory);
+                Connection connection = new Connection(socket, rootDirectory);//NOPMD
                 executor.execute(connection);
+
             } catch (IOException e) {
                 log.catching(e);
             }
@@ -88,10 +87,10 @@ public class SocketsWebServer implements WebServer {
      */
     private void setupServerSocket() {
         try {
-            serverSocket = new ServerSocket(serverPort, 20, InetAddress.getByName("127.0.0.1"));
+            serverSocket = new ServerSocket(serverPort, 20, InetAddress.getByName("127.0.0.1"));//NOPMD
         } catch (IOException e) {
             log.catching(e);
-            throw new RuntimeException("Server socket could not be created");
+            throw new RuntimeException("Server socket could not be created", e);
 
         }
     }
