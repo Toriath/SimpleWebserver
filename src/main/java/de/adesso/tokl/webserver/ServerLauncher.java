@@ -1,6 +1,7 @@
 package de.adesso.tokl.webserver;
 
 import de.adesso.tokl.webserver.sockets.SocketsWebServer;
+import de.adesso.tokl.webserver.sockets.WebServer;
 import de.adesso.tokl.webserver.sockets.configuration.*;
 import lombok.extern.log4j.Log4j2;
 
