@@ -36,7 +36,6 @@ class Connection implements Runnable {
             Request request = new Request(socket.getInputStream(), rootDirectory);
             answerRequest(request);
             socket.close();
-
         } catch (IOException e) {
             log.catching(e);
         }
@@ -50,7 +49,7 @@ class Connection implements Runnable {
      */
     private void answerRequest(Request request) throws IOException {
         Response response = new Response(socket.getOutputStream(), request);
-        response.sendResponse();
+        response.answerRequest();
     }
 
 

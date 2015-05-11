@@ -3,10 +3,7 @@ package de.adesso.tokl.webserver.sockets;
 import de.adesso.tokl.webserver.sockets.configuration.HttpHeader;
 import lombok.extern.log4j.Log4j2;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * Created by kloss on 30.04.2015.
@@ -16,15 +13,14 @@ import java.io.OutputStream;
 @Log4j2
 class Response {
 
-    private static final int BUFFER_SIZE = 2048;
     private final OutputStream output;
     private Request request;
 
     /**
      * Constructor for a Response to a HTTP Request.
      *
-     * @param output        the output stream of the socket that was used to create the request
-     * @param request
+     * @param output  the output stream of the socket that was used to create the request
+     * @param request the request to answer to
      */
     public Response(OutputStream output, Request request) {
         this.output = output;
@@ -36,10 +32,10 @@ class Response {
      *
      * @throws IOException if the file input stream can not be closed
      */
-    public void sendResponse() throws IOException {
+    public void answerRequest() throws IOException {
         try {
             File requestedFile = request.getRequestedFile();
-            if(requestedFile.exists()){
+            if (requestedFile.exists()) {
                 sendHttpHeader();
                 sendFile(requestedFile);
             } else {
@@ -59,27 +55,27 @@ class Response {
      * @throws IOException in case the file can not be send to the client
      */
     private void sendFile(File requestedFile) throws IOException {
+        byte[] requestedFileBytes = new byte[(int) requestedFile.length()];
+
         FileInputStream fileInputStream = new FileInputStream(requestedFile);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
 
-        byte[] bytes = new byte[BUFFER_SIZE];
-        int ch = fileInputStream.read(bytes, 0, BUFFER_SIZE);
+        bufferedInputStream.read(requestedFileBytes, 0, requestedFileBytes.length);
 
-        while (ch != -1) {
-            output.write(bytes, 0, ch);
-            ch = fileInputStream.read(bytes, 0, BUFFER_SIZE);
-        }
+        sendBytes(requestedFileBytes);
 
         fileInputStream.close();
+        bufferedInputStream.close();
     }
 
     /**
-     * Send a 404 error page to the requesting client
+     * Send an error page to the requesting client
      *
      * @param error the HttpError to send
-     * @throws IOException when is is not possible to write to the output stream
+     * @throws IOException when it is not possible to write to the output stream
      */
     private void sendError(HttpError error) throws IOException {
-        output.write(error.getBytes());
+        sendBytes(error.getBytes());
     }
 
     /**
@@ -90,8 +86,18 @@ class Response {
      */
     private void sendHttpHeader() throws IOException {
         HttpHeader header = new HttpHeader(request.getUri(), "SimpleServer 1.0");
-        output.write(header.getBytes());
+        sendBytes(header.getBytes());
     }
 
+    /**
+     * Sends bytes to the output stream and flushes
+     *
+     * @param bytes the bytes to send
+     * @throws IOException in case the writing or flushing fails
+     */
+    private void sendBytes(byte[] bytes) throws IOException {
+        output.write(bytes);
+        output.flush();
+    }
 
 }
