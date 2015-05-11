@@ -17,6 +17,10 @@ import java.security.CodeSource;
 @Log4j2
 class ServerLauncher {
 
+    /**
+     * Constructor for the server launcher.
+     * @param args the same argument array as given by the main method.
+     */
     public void launch(String[] args) {
         ServerConfiguration config = null;
 
@@ -52,7 +56,10 @@ class ServerLauncher {
 
     }
 
-
+    /**
+     * Searches for a property file next to the jar
+     * @return the property file as file or null if the properties file does not exist.
+     */
     public File getPropertiesFile() {
         File file = null;
         CodeSource src = PropertyConfiguration.class.getProtectionDomain().getCodeSource();

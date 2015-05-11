@@ -26,6 +26,12 @@ class Response {
     @Setter
     private Request request;
 
+    /**
+     * Constructor for a Response to a HTTP Request.
+     *
+     * @param output        the output stream of the socket that was used to create the request
+     * @param rootDirectory the root directory to search for files
+     */
     public Response(OutputStream output, String rootDirectory) {
         this.output = output;
         this.rootDirectory = rootDirectory;
@@ -38,7 +44,9 @@ class Response {
      */
     public void sendStaticResource() throws IOException {
 
-        if (request.getUri() == null) return;
+        if (request.getUri() == null) {
+            return;
+        }
         File file;
         try {
             file = new File(rootDirectory, request.getUri());
@@ -49,13 +57,25 @@ class Response {
         }
     }
 
+    /**
+     * Checks if a file is a directory and redirects to an index.html if true
+     *
+     * @param file the file to check
+     * @return the redirected file. If the original file was not a file it is returned without being changed.
+     */
     private File redirectToIndex(File file) {
-        if(file.isDirectory()){
+        if (file.isDirectory()) {
             file = new File(file.getPath() + File.separator + "index.html");
         }
         return file;
     }
 
+    /**
+     * Sends a response using the given file
+     *
+     * @param file the file to send as response
+     * @throws IOException in case  the file or error could not be written to the output stream
+     */
     private void sendResponse(File file) throws IOException {
         if (file.exists()) {
             FileInputStream fis = new FileInputStream(file);
@@ -91,6 +111,7 @@ class Response {
     /**
      * Send a 404 error page to the requesting client
      *
+     * @param error the HttpError to send
      * @throws IOException when is is not possible to write to the output stream
      */
     private void sendError(HttpError error) throws IOException {
@@ -111,7 +132,6 @@ class Response {
                 "Server: SimpleWebserver 1.0\r\n\r\n").getBytes();
         output.write(httpHeaderBytes);
     }
-
 
 
 }

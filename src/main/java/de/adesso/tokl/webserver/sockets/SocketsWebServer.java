@@ -29,6 +29,10 @@ public class SocketsWebServer implements WebServer {
     private ServerSocket serverSocket;
     private boolean running;
 
+    /**
+     * Creates a webserver wich uses the given configuration
+     * @param config the configuration for the server
+     */
     public SocketsWebServer(ServerConfiguration config) {
         this.rootDirectory = config.getRootDirectory();
         this.serverPort = config.getServerPort();
@@ -37,11 +41,17 @@ public class SocketsWebServer implements WebServer {
         setupServerSocket();
     }
 
+    /**
+     * Logs the configurations which is actively applied to the sever after startup
+     */
     private void logConfiguration() {
         log.info("Server port set to: " + serverPort);
         log.info("Root directory set to: " + rootDirectory);
     }
 
+    /**
+     * Creates the directories for the server.
+     */
     private void createDirectories() {
         log.trace("Server is creating needed directories");
         File rootDir = new File(rootDirectory);
@@ -73,6 +83,9 @@ public class SocketsWebServer implements WebServer {
 
     }
 
+    /**
+     * Initializes the server socket with the given configuration
+     */
     private void setupServerSocket() {
         try {
             serverSocket = new ServerSocket(serverPort, 20, InetAddress.getByName("127.0.0.1"));
