@@ -1,5 +1,7 @@
 package de.adesso.tokl.webserver.sockets;
 
+import de.adesso.tokl.webserver.sockets.http.HttpRequest;
+import de.adesso.tokl.webserver.sockets.http.HttpResponse;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;

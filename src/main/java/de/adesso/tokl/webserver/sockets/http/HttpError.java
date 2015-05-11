@@ -1,4 +1,4 @@
-package de.adesso.tokl.webserver.sockets;
+package de.adesso.tokl.webserver.sockets.http;
 
 /**
  * Created by kloss on 05.05.2015.

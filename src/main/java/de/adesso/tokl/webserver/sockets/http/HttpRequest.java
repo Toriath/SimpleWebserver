@@ -1,4 +1,4 @@
-package de.adesso.tokl.webserver.sockets;
+package de.adesso.tokl.webserver.sockets.http;
 
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
@@ -14,7 +14,7 @@ import java.io.InputStream;
  */
 
 @Log4j2
-class HttpRequest {
+public class HttpRequest {
 
 
     private final InputStream input;

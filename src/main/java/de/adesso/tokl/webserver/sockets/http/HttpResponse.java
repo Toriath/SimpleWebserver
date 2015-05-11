@@ -1,4 +1,4 @@
-package de.adesso.tokl.webserver.sockets;
+package de.adesso.tokl.webserver.sockets.http;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -10,7 +10,7 @@ import java.io.*;
  * Represents a HTTP reponse to a given HTTP request.
  */
 @Log4j2
-class HttpResponse {
+public class HttpResponse {
 
     private final OutputStream output;
     private HttpRequest httpRequest;
