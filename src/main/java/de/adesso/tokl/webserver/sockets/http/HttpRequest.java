@@ -26,7 +26,7 @@ public class HttpRequest {
      * Constructor for a Request by a given input stream
      *
      * @param input The Inputstream to read the request from
-     * @param rootDirectory
+     * @param rootDirectory the root directory of the server to look for files
      */
     public HttpRequest(InputStream input, String rootDirectory) {
         this.input = input;

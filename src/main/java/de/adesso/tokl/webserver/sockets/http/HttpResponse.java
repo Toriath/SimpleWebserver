@@ -80,7 +80,6 @@ public class HttpResponse {
     /**
      * Sends the HTTP header to define the Mime Tag, Date and Servername
      *
-     * @param uri The uri of the file to send
      * @throws IOException in case the bytes can not be written to the output stream
      */
     private void sendHttpHeader() throws IOException {
