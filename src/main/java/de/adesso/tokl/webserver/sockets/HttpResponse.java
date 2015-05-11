@@ -1,6 +1,5 @@
 package de.adesso.tokl.webserver.sockets;
 
-import de.adesso.tokl.webserver.sockets.configuration.HttpHeader;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.*;
@@ -11,20 +10,20 @@ import java.io.*;
  * Represents a HTTP reponse to a given HTTP request.
  */
 @Log4j2
-class Response {
+class HttpResponse {
 
     private final OutputStream output;
-    private Request request;
+    private HttpRequest httpRequest;
 
     /**
      * Constructor for a Response to a HTTP Request.
      *
      * @param output  the output stream of the socket that was used to create the request
-     * @param request the request to answer to
+     * @param httpRequest the request to answer to
      */
-    public Response(OutputStream output, Request request) {
+    public HttpResponse(OutputStream output, HttpRequest httpRequest) {
         this.output = output;
-        this.request = request;
+        this.httpRequest = httpRequest;
     }
 
     /**
@@ -34,7 +33,7 @@ class Response {
      */
     public void answerRequest() throws IOException {
         try {
-            File requestedFile = request.getRequestedFile();
+            File requestedFile = httpRequest.getRequestedFile();
             if (requestedFile.exists()) {
                 sendHttpHeader();
                 sendFile(requestedFile);
@@ -85,7 +84,7 @@ class Response {
      * @throws IOException in case the bytes can not be written to the output stream
      */
     private void sendHttpHeader() throws IOException {
-        HttpHeader header = new HttpHeader(request.getUri(), "SimpleServer 1.0");
+        HttpHeader header = new HttpHeader(httpRequest.getUri(), "SimpleServer 1.0");
         sendBytes(header.getBytes());
     }
 

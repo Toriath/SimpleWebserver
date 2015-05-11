@@ -33,8 +33,8 @@ class Connection implements Runnable {
      */
     public void run() {
         try {
-            Request request = new Request(socket.getInputStream(), rootDirectory);
-            answerRequest(request);
+            HttpRequest httpRequest = new HttpRequest(socket.getInputStream(), rootDirectory);
+            answerRequest(httpRequest);
             socket.close();
         } catch (IOException e) {
             log.catching(e);
@@ -44,12 +44,12 @@ class Connection implements Runnable {
     /**
      * Answers the given request by creating a response object
      *
-     * @param request the request to answer
+     * @param httpRequest the request to answer
      * @throws IOException of the response can not be sent to the socket.
      */
-    private void answerRequest(Request request) throws IOException {
-        Response response = new Response(socket.getOutputStream(), request);
-        response.answerRequest();
+    private void answerRequest(HttpRequest httpRequest) throws IOException {
+        HttpResponse httpResponse = new HttpResponse(socket.getOutputStream(), httpRequest);
+        httpResponse.answerRequest();
     }
 
 

@@ -14,7 +14,7 @@ import java.io.InputStream;
  */
 
 @Log4j2
-class Request {
+class HttpRequest {
 
 
     private final InputStream input;
@@ -28,7 +28,7 @@ class Request {
      * @param input The Inputstream to read the request from
      * @param rootDirectory
      */
-    public Request(InputStream input, String rootDirectory) {
+    public HttpRequest(InputStream input, String rootDirectory) {
         this.input = input;
         this.rootDirectory = rootDirectory;
         parse();
