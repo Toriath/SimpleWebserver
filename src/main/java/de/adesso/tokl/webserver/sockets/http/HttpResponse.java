@@ -33,6 +33,8 @@ public class HttpResponse {
      */
     public void answerRequest() throws IOException {
         try {
+
+
             File requestedFile = httpRequest.getRequestedFile();
             if (requestedFile.exists()) {
                 sendHttpHeader();
@@ -41,11 +43,13 @@ public class HttpResponse {
                 log.error("Requested file was not found: " + requestedFile.getPath());
                 sendError(HttpError.ERROR_404);
             }
+
         } catch (IOException e) {
             log.catching(e);
             sendError(HttpError.ERROR_500);
         }
     }
+
 
     /**
      * Sends the given file to the client
@@ -75,6 +79,16 @@ public class HttpResponse {
      */
     private void sendError(HttpError error) throws IOException {
         sendBytes(error.getBytes());
+    }
+
+    /**
+     * Can be used to redirect a client to another site
+     * @param url The url to redirect to
+     * @throws IOException in case the redirect can not be sent to the output stream
+     */
+    private void sendRedirect(String url) throws IOException {
+        String redirect = "HTTP/1.1 307 Temporary Redirect\r\nLocation: " + url;
+        sendBytes(redirect.getBytes());
     }
 
     /**

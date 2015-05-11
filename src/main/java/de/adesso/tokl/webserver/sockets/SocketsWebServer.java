@@ -53,7 +53,10 @@ public class SocketsWebServer implements WebServer {
     private void createDirectories() {
         log.trace("Server is creating needed directories");
         File rootDir = new File(config.getRootDirectory());
-        rootDir.mkdirs();
+        boolean success = rootDir.mkdirs();
+        if (!success) {
+            log.error("Server did not create all needed directories successfully");
+        }
     }
 
     /**
@@ -71,6 +74,7 @@ public class SocketsWebServer implements WebServer {
             try {
                 log.trace("Waiting for requests...");
                 socket = serverSocket.accept();
+
                 Connection connection = new Connection(socket, config.getRootDirectory());//NOPMD
                 executor.execute(connection);
 
