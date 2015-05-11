@@ -3,7 +3,6 @@ package de.adesso.tokl.webserver.sockets;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.Socket;
 
 /**
@@ -14,9 +13,20 @@ import java.net.Socket;
 @Log4j2
 class Connection implements Runnable {
 
+    /**
+     * The Socket this connection is created for
+     */
     private final Socket socket;
+    /**
+     * The rootDirectory to search for the requested files
+     */
     private final String rootDirectory;
 
+    /**
+     * Constructor for an incoming connection
+     * @param socket The given socket provided by the Server
+     * @param rootDirectory the root directory of the server
+     */
     public Connection(Socket socket, String rootDirectory) {
         this.socket = socket;
         this.rootDirectory = rootDirectory;
@@ -28,7 +38,7 @@ class Connection implements Runnable {
     public void run() {
         try {
             Request request = new Request(socket.getInputStream());
-            sendResponseForRequest(socket.getOutputStream(), request);
+            answerRequest(request);
             socket.close();
 
         } catch (IOException e) {
@@ -36,8 +46,13 @@ class Connection implements Runnable {
         }
     }
 
-    private void sendResponseForRequest(OutputStream output, Request request) throws IOException {
-        Response response = new Response(output, rootDirectory);
+    /**
+     * Answers the given request by creating a response object
+     * @param request the request to answer
+     * @throws IOException of the response can not be sent to the socket.
+     */
+    private void answerRequest(Request request) throws IOException {
+        Response response = new Response(socket.getOutputStream(), rootDirectory);
         response.setRequest(request);
         response.sendStaticResource();
     }

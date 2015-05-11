@@ -11,6 +11,7 @@ import org.apache.commons.cli.*;
 @Log4j2
 public class CommandLineConfiguration implements ServerConfiguration {
 
+    //TODO: Add Parameter to export commandline Configuration as properties
 
     /**
      * The configured server port.
@@ -70,6 +71,7 @@ public class CommandLineConfiguration implements ServerConfiguration {
     }
 
     /**
+     * Getter for the configured server port
      * @return The server port
      * @see ServerConfiguration#getServerPort()
      */
@@ -93,6 +95,7 @@ public class CommandLineConfiguration implements ServerConfiguration {
     }
 
     /**
+     * Getter for the configured root directory
      * @return the root directory
      * @see ServerConfiguration#getRootDirectory()
      */

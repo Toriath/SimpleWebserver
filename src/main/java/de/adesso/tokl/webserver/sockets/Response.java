@@ -61,6 +61,7 @@ class Response {
             FileInputStream fis = new FileInputStream(file);
             sendHeader(request.getUri());
             sendFile(fis);
+            fis.close();
         } else {
             log.error("Requested file was not found: " + file.getPath());
             sendError(HttpError.ERROR_404);
