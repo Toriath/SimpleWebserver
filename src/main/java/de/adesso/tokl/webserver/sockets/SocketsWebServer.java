@@ -56,6 +56,7 @@ public class SocketsWebServer implements WebServer {
 
         running = true;
         //TODO: Start the Server in its own thread and wait for commands in the old like shutdown, change port, change root dir etc.
+        //TODO: TrayIcon
         while (running) {
             Socket socket;
             try {
@@ -77,7 +78,8 @@ public class SocketsWebServer implements WebServer {
             serverSocket = new ServerSocket(serverPort, 20, InetAddress.getByName("127.0.0.1"));
         } catch (IOException e) {
             log.catching(e);
-            System.exit(1);
+            throw new RuntimeException("Server socket could not be created");
+
         }
     }
 

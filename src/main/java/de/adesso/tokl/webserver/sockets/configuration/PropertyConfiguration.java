@@ -13,8 +13,14 @@ import java.util.Properties;
 @Log4j2
 public class PropertyConfiguration implements ServerConfiguration {
 
-    Properties properties = new Properties();
 
+    private Properties properties = new Properties();
+
+    /**
+     * Constructor to create a configuration from a given properties File
+     *
+     * @param propertiesFile The properties File to load the configuration from
+     */
     public PropertyConfiguration(File propertiesFile) {
 
         InputStream inputStream = null;
@@ -22,6 +28,8 @@ public class PropertyConfiguration implements ServerConfiguration {
             inputStream = new FileInputStream(propertiesFile);
             if (inputStream != null) {
                 properties.load(inputStream);
+                inputStream.close();
+
             }
         } catch (FileNotFoundException e) {
             throw new ConfigurationException("The given properties file could not be found.");

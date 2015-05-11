@@ -8,18 +8,14 @@ package de.adesso.tokl.webserver.sockets;
 public enum HttpError {
 
 
-    /**
-     * Message for HTTP Error 404
-     */
+
     ERROR_404("HTTP/1.1 404 File Not Found\r\n" +
             "Content-Type: text/html\r\n" +
             "Content-Length: 27\r\n" +
             "\r\n" +
             "<h1>404 File Not Found</h1>"),
 
-    /**
-     * Message for HTTP Error 500
-     */
+
     ERROR_500("HTTP/1.1 500 Internal Server Error" +
             "Content-Type: text/html\r\n" +
             "Content-Length: 34\r\n" +
@@ -27,9 +23,7 @@ public enum HttpError {
             "<h1>500 Internal Server Error</h1>");
 
 
-    /**
-     * The error message
-     */
+
     private String errorMessage;
 
     /**

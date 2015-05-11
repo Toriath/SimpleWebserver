@@ -7,24 +7,20 @@ import java.net.Socket;
 
 /**
  * Created by kloss on 30.04.2015.
- *
+ * <p>
  * Represents an ongoing connection to a requesting client
  */
 @Log4j2
 class Connection implements Runnable {
 
-    /**
-     * The Socket this connection is created for
-     */
+
     private final Socket socket;
-    /**
-     * The rootDirectory to search for the requested files
-     */
     private final String rootDirectory;
 
     /**
      * Constructor for an incoming connection
-     * @param socket The given socket provided by the Server
+     *
+     * @param socket        The given socket provided by the Server
      * @param rootDirectory the root directory of the server
      */
     public Connection(Socket socket, String rootDirectory) {
@@ -48,6 +44,7 @@ class Connection implements Runnable {
 
     /**
      * Answers the given request by creating a response object
+     *
      * @param request the request to answer
      * @throws IOException of the response can not be sent to the socket.
      */
@@ -56,7 +53,6 @@ class Connection implements Runnable {
         response.setRequest(request);
         response.sendStaticResource();
     }
-
 
 
 }
