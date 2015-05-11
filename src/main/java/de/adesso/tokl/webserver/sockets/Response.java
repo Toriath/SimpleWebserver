@@ -1,16 +1,12 @@
 package de.adesso.tokl.webserver.sockets;
 
-import lombok.Setter;
+import de.adesso.tokl.webserver.sockets.configuration.HttpHeader;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.file.Paths;
-import java.util.Date;
-
-import static java.nio.file.Files.probeContentType;
 
 /**
  * Created by kloss on 30.04.2015.
@@ -22,19 +18,17 @@ class Response {
 
     private static final int BUFFER_SIZE = 2048;
     private final OutputStream output;
-    private final String rootDirectory;
-    @Setter
     private Request request;
 
     /**
      * Constructor for a Response to a HTTP Request.
      *
      * @param output        the output stream of the socket that was used to create the request
-     * @param rootDirectory the root directory to search for files
+     * @param request
      */
-    public Response(OutputStream output, String rootDirectory) {
+    public Response(OutputStream output, Request request) {
         this.output = output;
-        this.rootDirectory = rootDirectory;
+        this.request = request;
     }
 
     /**
@@ -42,70 +36,40 @@ class Response {
      *
      * @throws IOException if the file input stream can not be closed
      */
-    public void sendStaticResource() throws IOException {
-
-        if (request.getUri() == null) {
-            return;
-        }
-        File file;
+    public void sendResponse() throws IOException {
         try {
-            file = new File(rootDirectory, request.getUri());
-            file = redirectToIndex(file);
-            sendResponse(file);
+            File requestedFile = request.getRequestedFile();
+            if(requestedFile.exists()){
+                sendHttpHeader();
+                sendFile(requestedFile);
+            } else {
+                log.error("Requested file was not found: " + requestedFile.getPath());
+                sendError(HttpError.ERROR_404);
+            }
         } catch (IOException e) {
+            log.catching(e);
             sendError(HttpError.ERROR_500);
-        }
-    }
-
-    /**
-     * Checks if a file is a directory and redirects to an index.html if true
-     *
-     * @param file the file to check
-     * @return the redirected file. If the original file was not a file it is returned without being changed.
-     */
-    private File redirectToIndex(File file) {
-        if (file.isDirectory()) {
-            file = new File(file.getPath() + File.separator + "index.html");
-        }
-        return file;
-    }
-
-    /**
-     * Sends a response using the given file
-     *
-     * @param file the file to send as response
-     * @throws IOException in case  the file or error could not be written to the output stream
-     */
-    private void sendResponse(File file) throws IOException {
-        if (file.exists()) {
-            FileInputStream fis = new FileInputStream(file);
-            sendHeader(request.getUri());
-            sendFile(fis);
-            fis.close();
-        } else {
-            log.error("Requested file was not found: " + file.getPath());
-            sendError(HttpError.ERROR_404);
         }
     }
 
     /**
      * Sends the given file to the client
      *
-     * @param fis The file input stream to send to the client via http
+     * @param requestedFile the requestedFile to send as response
      * @throws IOException in case the file can not be send to the client
      */
-    private void sendFile(FileInputStream fis) throws IOException {
+    private void sendFile(File requestedFile) throws IOException {
+        FileInputStream fileInputStream = new FileInputStream(requestedFile);
 
         byte[] bytes = new byte[BUFFER_SIZE];
-        int ch = fis.read(bytes, 0, BUFFER_SIZE);
+        int ch = fileInputStream.read(bytes, 0, BUFFER_SIZE);
 
         while (ch != -1) {
             output.write(bytes, 0, ch);
-            ch = fis.read(bytes, 0, BUFFER_SIZE);
+            ch = fileInputStream.read(bytes, 0, BUFFER_SIZE);
         }
 
-        fis.close();
-
+        fileInputStream.close();
     }
 
     /**
@@ -124,13 +88,9 @@ class Response {
      * @param uri The uri of the file to send
      * @throws IOException in case the bytes can not be written to the output stream
      */
-    private void sendHeader(String uri) throws IOException {
-        String contentType = probeContentType(Paths.get(uri));
-        byte[] httpHeaderBytes = ("HTTP/1.1 200 OK\r\n" +
-                "Content-Type: " + contentType + "\r\n" +
-                "Date: " + new Date() + "\r\n" +
-                "Server: SimpleWebserver 1.0\r\n\r\n").getBytes();
-        output.write(httpHeaderBytes);
+    private void sendHttpHeader() throws IOException {
+        HttpHeader header = new HttpHeader(request.getUri(), "SimpleServer 1.0");
+        output.write(header.getBytes());
     }
 
 

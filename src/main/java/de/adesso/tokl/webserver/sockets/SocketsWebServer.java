@@ -24,18 +24,17 @@ import java.util.concurrent.TimeUnit;
 public class SocketsWebServer implements WebServer {
 
     private final ExecutorService executor = new ThreadPoolExecutor(20, 20, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(20));
-    private final String rootDirectory;
-    private final int serverPort;
+    private ServerConfiguration config;
     private ServerSocket serverSocket;
     private boolean running;
 
     /**
      * Creates a webserver wich uses the given configuration
+     *
      * @param config the configuration for the server
      */
     public SocketsWebServer(final ServerConfiguration config) {
-        this.rootDirectory = config.getRootDirectory();
-        this.serverPort = config.getServerPort();
+        this.config = config;
         logConfiguration();
         createDirectories();
         setupServerSocket();
@@ -45,16 +44,16 @@ public class SocketsWebServer implements WebServer {
      * Logs the configurations which is actively applied to the sever after startup
      */
     private void logConfiguration() {
-        log.info("Server port set to: " + serverPort);
-        log.info("Root directory set to: " + rootDirectory);
+        log.info("Server port set to: " + config.getServerPort());
+        log.info("Root directory set to: " + config.getRootDirectory());
     }
 
     /**
      * Creates the directories for the server.
      */
     private void createDirectories() {
-        log.trace("Server is creating needed directorintellij zeilenies");
-        File rootDir = new File(rootDirectory);
+        log.trace("Server is creating needed directories");
+        File rootDir = new File(config.getRootDirectory());
         rootDir.mkdirs();
     }
 
@@ -67,12 +66,13 @@ public class SocketsWebServer implements WebServer {
         running = true;
         //TODO: Start the Server in its own thread and wait for commands in the old like shutdown, change port, change root dir etc.
         //TODO: TrayIcon
+        //TODO: Redirects
         while (running) {
             Socket socket;
             try {
                 log.trace("Waiting for requests...");
                 socket = serverSocket.accept();
-                Connection connection = new Connection(socket, rootDirectory);//NOPMD
+                Connection connection = new Connection(socket, config.getRootDirectory());//NOPMD
                 executor.execute(connection);
 
             } catch (IOException e) {
@@ -87,7 +87,7 @@ public class SocketsWebServer implements WebServer {
      */
     private void setupServerSocket() {
         try {
-            serverSocket = new ServerSocket(serverPort, 20, InetAddress.getByName("127.0.0.1"));//NOPMD
+            serverSocket = new ServerSocket(config.getServerPort(), 20, InetAddress.getByName("127.0.0.1"));//NOPMD
         } catch (IOException e) {
             log.catching(e);
             throw new RuntimeException("Server socket could not be created", e);

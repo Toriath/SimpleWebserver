@@ -33,7 +33,7 @@ class Connection implements Runnable {
      */
     public void run() {
         try {
-            Request request = new Request(socket.getInputStream());
+            Request request = new Request(socket.getInputStream(), rootDirectory);
             answerRequest(request);
             socket.close();
 
@@ -49,9 +49,8 @@ class Connection implements Runnable {
      * @throws IOException of the response can not be sent to the socket.
      */
     private void answerRequest(Request request) throws IOException {
-        Response response = new Response(socket.getOutputStream(), rootDirectory);
-        response.setRequest(request);
-        response.sendStaticResource();
+        Response response = new Response(socket.getOutputStream(), request);
+        response.sendResponse();
     }
 
 

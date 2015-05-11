@@ -3,6 +3,7 @@ package de.adesso.tokl.webserver.sockets;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -17,6 +18,7 @@ class Request {
 
 
     private final InputStream input;
+    private String rootDirectory;
     @Getter
     private String uri;
 
@@ -24,9 +26,11 @@ class Request {
      * Constructor for a Request by a given input stream
      *
      * @param input The Inputstream to read the request from
+     * @param rootDirectory
      */
-    public Request(InputStream input) {
+    public Request(InputStream input, String rootDirectory) {
         this.input = input;
+        this.rootDirectory = rootDirectory;
         parse();
     }
 
@@ -72,5 +76,28 @@ class Request {
         }
 
         return null;
+    }
+
+    /**
+     * Returns the requested file. In case of directories it redirects to the index.html.
+     * @return the requested file
+     */
+    public File getRequestedFile(){
+        File requestedFile = new File(rootDirectory, getUri());
+        requestedFile = redirectToIndex(requestedFile);
+        return requestedFile;
+    }
+
+    /**
+     * Checks if a file is a directory and redirects to an index.html if true
+     *
+     * @param file the file to check
+     * @return the redirected file. If the original file was not a file it is returned without being changed.
+     */
+    private File redirectToIndex(File file) {
+        if (file.isDirectory()) {
+            file = new File(file.getPath() + File.separator + "index.html");
+        }
+        return file;
     }
 }

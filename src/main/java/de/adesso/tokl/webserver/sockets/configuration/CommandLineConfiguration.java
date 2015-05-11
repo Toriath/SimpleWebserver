@@ -11,7 +11,7 @@ import org.apache.commons.cli.*;
 @Log4j2
 public class CommandLineConfiguration implements ServerConfiguration {
 
-    //TODO: Add Parameter to export commandline Configuration as properties
+
 
     private int serverPort;
     private String rootDirectory;
