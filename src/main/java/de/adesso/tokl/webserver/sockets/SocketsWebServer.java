@@ -55,7 +55,7 @@ public class SocketsWebServer implements WebServer {
         File rootDir = new File(config.getRootDirectory());
         boolean success = rootDir.mkdirs();
         if (!success) {
-            log.error("Server did not create all needed directories successfully");
+            log.error("Server did not create all needed directories");
         }
     }
 
