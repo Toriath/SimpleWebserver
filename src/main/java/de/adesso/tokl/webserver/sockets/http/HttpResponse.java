@@ -33,8 +33,6 @@ public class HttpResponse {
      */
     public void answerRequest() throws IOException {
         try {
-
-
             File requestedFile = httpRequest.getRequestedFile();
             if (requestedFile.exists()) {
                 sendHttpHeader();
@@ -58,6 +56,7 @@ public class HttpResponse {
      * @throws IOException in case the file can not be send to the client
      */
     private void sendFile(File requestedFile) throws IOException {
+        log.info("Sending file " + requestedFile.getPath());
         byte[] requestedFileBytes = new byte[(int) requestedFile.length()];
 
         FileInputStream fileInputStream = new FileInputStream(requestedFile);
@@ -78,6 +77,7 @@ public class HttpResponse {
      * @throws IOException when it is not possible to write to the output stream
      */
     private void sendError(HttpError error) throws IOException {
+        log.info("Sending HttpErrpr " + error.name());
         sendBytes(error.getBytes());
     }
 
@@ -97,6 +97,7 @@ public class HttpResponse {
      * @throws IOException in case the bytes can not be written to the output stream
      */
     private void sendHttpHeader() throws IOException {
+        log.info("Sending http header");
         HttpHeader header = new HttpHeader(httpRequest.getUri(), "SimpleServer 1.0");
         sendBytes(header.getBytes());
     }
