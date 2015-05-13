@@ -72,7 +72,6 @@ public class RequestedFile {
     /**
      * Checks if a file is a directory and redirects to an index.html if true
      *
-     *
      * @return the redirected file. If the original file was not a file it is returned without being changed.
      */
     private void redirectToIndex() {

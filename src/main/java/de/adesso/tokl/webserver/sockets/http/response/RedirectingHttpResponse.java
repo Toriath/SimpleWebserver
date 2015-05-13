@@ -14,7 +14,6 @@ public class RedirectingHttpResponse extends HttpResponse {
         super(socket);
         this.redirectUrl = redirectUrl;
     }
-//TODO: Implement
     @Override
     protected byte[] getDataBytes() {
         return "".getBytes();
@@ -22,11 +21,11 @@ public class RedirectingHttpResponse extends HttpResponse {
 
     @Override
     protected byte[] getHeaderBytes() {
-        return new byte[0];
+        return ("Location: " + redirectUrl + "\r\n").getBytes();
     }
 
     @Override
     protected byte[] getStatusCodeBytes() {
-        return new byte[0];
+        return "HTTP/1.1 307 Temporary Redirect\r\n".getBytes();
     }
 }
