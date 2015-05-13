@@ -5,12 +5,15 @@ import de.adesso.tokl.webserver.sockets.http.request.HttpRequest;
 import de.adesso.tokl.webserver.sockets.http.request.RequestedFile;
 import de.adesso.tokl.webserver.sockets.http.response.FileHttpResponse;
 import de.adesso.tokl.webserver.sockets.http.response.HttpResponse;
-import de.adesso.tokl.webserver.sockets.http.response.error.Error400HttpResponse;
+import de.adesso.tokl.webserver.sockets.http.response.RedirectingHttpResponse;
+import de.adesso.tokl.webserver.sockets.http.response.error.Error404HttpResponse;
 import de.adesso.tokl.webserver.sockets.http.response.error.Error500HttpResponse;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by kloss on 30.04.2015.
@@ -23,7 +26,7 @@ class Connection implements Runnable {
 
     private final Socket socket;
     private final String rootDirectory;
-
+    private Map<String, String> redirects = new HashMap<String, String>();
     /**
      * Constructor for an incoming connection
      *
@@ -61,20 +64,25 @@ class Connection implements Runnable {
 
     private HttpResponse chooseResponseType(HttpRequest httpRequest) {
 
-        RequestedFile requestedFile = new RequestedFile(rootDirectory, httpRequest.getUri());
-        //TODO: Check for bad request
-        //TODO: Check for redirects
-        if (requestedFile.exists()) {
+        String uri = httpRequest.getUri();
+        RequestedFile requestedFile = new RequestedFile(rootDirectory, uri);
+
+        if (isRedirect(uri)) {
+            return new RedirectingHttpResponse(socket, getRedirect(uri));
+        } else if (requestedFile.exists()) {
             return new FileHttpResponse(socket, requestedFile);
         } else {
-            return new Error400HttpResponse(socket);
+            return new Error404HttpResponse(socket);
         }
 
     }
 
+    private String getRedirect(String uri) {
+        return redirects.get(uri);
+    }
 
     private boolean isRedirect(String uri) {
-        return false; //TODO: implement
+        return redirects.containsKey(uri);
     }
 
 

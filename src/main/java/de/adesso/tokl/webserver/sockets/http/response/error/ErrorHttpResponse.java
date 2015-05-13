@@ -7,7 +7,7 @@ import java.net.Socket;
 /**
  * Created by kloss on 13.05.2015.
  */
-public class ErrorHttpResponse extends HttpResponse {
+public abstract class ErrorHttpResponse extends HttpResponse {
 
     private final String errorMessage;
     private final String statusCode;
