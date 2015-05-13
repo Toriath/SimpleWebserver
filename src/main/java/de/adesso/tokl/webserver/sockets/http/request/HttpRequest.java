@@ -1,11 +1,12 @@
-package de.adesso.tokl.webserver.sockets.http;
+package de.adesso.tokl.webserver.sockets.http.request;
 
+import de.adesso.tokl.webserver.sockets.http.InternalServerErrorException;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Socket;
 
 /**
  * Created by kloss on 30.04.2015.
@@ -17,20 +18,23 @@ import java.io.InputStream;
 public class HttpRequest {
 
 
-    private final InputStream input;
-    private String rootDirectory;
+    private InputStream input;
+
     @Getter
     private String uri;
 
     /**
      * Constructor for a Request by a given input stream
      *
-     * @param input The Inputstream to read the request from
-     * @param rootDirectory the root directory of the server to look for files
+     * @param socket The socket this request is created for
      */
-    public HttpRequest(InputStream input, String rootDirectory) {
-        this.input = input;
-        this.rootDirectory = rootDirectory;
+    public HttpRequest(Socket socket) {
+        try {
+            this.input = socket.getInputStream();
+        } catch (IOException e) {
+            log.catching(e);
+            throw new InternalServerErrorException("Failed to get the inputstream from the socket", e);
+        }
         parse();
     }
 
@@ -78,26 +82,7 @@ public class HttpRequest {
         return null;
     }
 
-    /**
-     * Returns the requested file. In case of directories it redirects to the index.html.
-     * @return the requested file
-     */
-    public File getRequestedFile(){
-        File requestedFile = new File(rootDirectory, getUri());
-        requestedFile = redirectToIndex(requestedFile);
-        return requestedFile;
-    }
 
-    /**
-     * Checks if a file is a directory and redirects to an index.html if true
-     *
-     * @param file the file to check
-     * @return the redirected file. If the original file was not a file it is returned without being changed.
-     */
-    private File redirectToIndex(File file) {
-        if (file.isDirectory()) {
-            file = new File(file.getPath() + File.separator + "index.html");
-        }
-        return file;
-    }
+
+
 }

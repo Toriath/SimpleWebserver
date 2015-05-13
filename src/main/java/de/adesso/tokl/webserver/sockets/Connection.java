@@ -1,7 +1,12 @@
 package de.adesso.tokl.webserver.sockets;
 
-import de.adesso.tokl.webserver.sockets.http.HttpRequest;
-import de.adesso.tokl.webserver.sockets.http.HttpResponse;
+import de.adesso.tokl.webserver.sockets.http.InternalServerErrorException;
+import de.adesso.tokl.webserver.sockets.http.request.HttpRequest;
+import de.adesso.tokl.webserver.sockets.http.request.RequestedFile;
+import de.adesso.tokl.webserver.sockets.http.response.error.Error404HttpResponse;
+import de.adesso.tokl.webserver.sockets.http.response.error.Error500HttpResponse;
+import de.adesso.tokl.webserver.sockets.http.response.FileHttpResponse;
+import de.adesso.tokl.webserver.sockets.http.response.HttpResponse;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
@@ -34,24 +39,42 @@ class Connection implements Runnable {
      * Creates a Request and sends a Response to the client
      */
     public void run() {
+        HttpResponse response = null;
         try {
-            HttpRequest httpRequest = new HttpRequest(socket.getInputStream(), rootDirectory);
-            answerRequest(httpRequest);
+            HttpRequest httpRequest = new HttpRequest(socket);
+            response = chooseResponseType(httpRequest);
+        } catch (InternalServerErrorException e) {
+            log.catching(e);
+            log.error("Internal Server error");
+            response = new Error500HttpResponse(socket);
+            //TODO set response to  error500
+        } finally {
+            response.sendResponse();
+        }
+
+
+        try {
             socket.close();
         } catch (IOException e) {
             log.catching(e);
         }
     }
 
-    /**
-     * Answers the given request by creating a response object
-     *
-     * @param httpRequest the request to answer
-     * @throws IOException of the response can not be sent to the socket.
-     */
-    private void answerRequest(HttpRequest httpRequest) throws IOException {
-        HttpResponse httpResponse = new HttpResponse(socket.getOutputStream(), httpRequest);
-        httpResponse.answerRequest();
+    private HttpResponse chooseResponseType(HttpRequest httpRequest) {
+
+        RequestedFile requestedFile = new RequestedFile(rootDirectory, httpRequest.getUri());
+
+        if (requestedFile.exists()) {
+            return new FileHttpResponse(socket, requestedFile);
+        } else {
+            return new Error404HttpResponse(socket);
+        }
+
+    }
+
+
+    private boolean isRedirect(String uri) {
+        return false;
     }
 
 
