@@ -3,10 +3,10 @@ package de.adesso.tokl.webserver.sockets;
 import de.adesso.tokl.webserver.sockets.http.InternalServerErrorException;
 import de.adesso.tokl.webserver.sockets.http.request.HttpRequest;
 import de.adesso.tokl.webserver.sockets.http.request.RequestedFile;
-import de.adesso.tokl.webserver.sockets.http.response.error.Error404HttpResponse;
-import de.adesso.tokl.webserver.sockets.http.response.error.Error500HttpResponse;
 import de.adesso.tokl.webserver.sockets.http.response.FileHttpResponse;
 import de.adesso.tokl.webserver.sockets.http.response.HttpResponse;
+import de.adesso.tokl.webserver.sockets.http.response.error.Error400HttpResponse;
+import de.adesso.tokl.webserver.sockets.http.response.error.Error500HttpResponse;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
@@ -47,7 +47,6 @@ class Connection implements Runnable {
             log.catching(e);
             log.error("Internal Server error");
             response = new Error500HttpResponse(socket);
-            //TODO set response to  error500
         } finally {
             response.sendResponse();
         }
@@ -63,18 +62,19 @@ class Connection implements Runnable {
     private HttpResponse chooseResponseType(HttpRequest httpRequest) {
 
         RequestedFile requestedFile = new RequestedFile(rootDirectory, httpRequest.getUri());
-
+        //TODO: Check for bad request
+        //TODO: Check for redirects
         if (requestedFile.exists()) {
             return new FileHttpResponse(socket, requestedFile);
         } else {
-            return new Error404HttpResponse(socket);
+            return new Error400HttpResponse(socket);
         }
 
     }
 
 
     private boolean isRedirect(String uri) {
-        return false;
+        return false; //TODO: implement
     }
 
 
