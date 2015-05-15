@@ -66,9 +66,7 @@ public class SocketsWebServer implements WebServer {
         log.trace("Server is starting up");
 
         running = true;
-        //TODO: Start the Server in its own thread and wait for commands in the old like shutdown, change port, change root dir etc.
-        //TODO: TrayIcon
-        //TODO: Redirects
+
         while (running) {
             Socket socket;
             try {

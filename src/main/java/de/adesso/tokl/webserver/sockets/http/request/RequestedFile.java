@@ -76,6 +76,7 @@ public class RequestedFile {
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
         try {
             bufferedInputStream.read(requestedFileBytes, 0, requestedFileBytes.length);
+            bufferedInputStream.close();
         } catch (IOException e) {
             log.catching(e);
             log.error("Could not read the requested file");
