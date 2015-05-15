@@ -27,6 +27,7 @@ class Connection implements Runnable {
     private final Socket socket;
     private final String rootDirectory;
     private Map<String, String> redirects = new HashMap<String, String>();
+
     /**
      * Constructor for an incoming connection
      *
@@ -51,6 +52,9 @@ class Connection implements Runnable {
             log.error("Internal Server error");
             response = new Error500HttpResponse(socket);
         } finally {
+            if (response == null) {
+                response = new Error500HttpResponse(socket);
+            }
             response.sendResponse();
         }
 
@@ -64,6 +68,7 @@ class Connection implements Runnable {
 
     /**
      * Chooses how to respond to a given request
+     *
      * @param httpRequest The request to answer
      * @return An HttpResponse Subclass that provides the correct type of response
      */
@@ -84,6 +89,7 @@ class Connection implements Runnable {
 
     /**
      * Gets the new URL for a redirect
+     *
      * @param uri the URI being called
      * @return the URL the uri is redirected to
      */
@@ -93,6 +99,7 @@ class Connection implements Runnable {
 
     /**
      * Checks if a given uri is a redirect or not
+     *
      * @param uri the uri to check
      * @return true if the uri should be redirected, otherwise false
      */
