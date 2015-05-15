@@ -26,7 +26,7 @@ public class RequestedFile {
     public RequestedFile(String baseDir, String fileName) {
         File file = new File(baseDir, fileName);
         requestedFile = file;
-
+        redirectToIndex();
     }
 
     /**
