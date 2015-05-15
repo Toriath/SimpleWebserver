@@ -13,6 +13,12 @@ public abstract class ErrorHttpResponse extends HttpResponse {
     private final String statusCode;
     private final String header;
 
+    /**
+     * Construct a HttpError
+     * @param socket the socket to respond
+     * @param errorCode The error code in the format "000 message..."
+     * @param errorMessage The Message shown to the user
+     */
     public ErrorHttpResponse(Socket socket, String errorCode, String errorMessage) {
         super(socket);
         this.errorMessage = errorMessage;

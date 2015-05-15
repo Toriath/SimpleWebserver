@@ -10,22 +10,31 @@ import java.nio.file.Paths;
 
 /**
  * Created by kloss on 13.05.2015.
+ * A File that was requested by a client.
  */
 @Log4j2
 public class RequestedFile {
 
     private File requestedFile;
 
-    //TODO: Refactor this class to the max
-
-
-    public RequestedFile(String baseDir, String fileName){
+    /**
+     * Creates a File wich is being requested by a client
+     *
+     * @param baseDir  the rootDirectory of the Server
+     * @param fileName The name of the requested file
+     */
+    public RequestedFile(String baseDir, String fileName) {
         File file = new File(baseDir, fileName);
         requestedFile = file;
 
     }
 
-    public String getContentType(){
+    /**
+     * Checks the content type of the requested file
+     *
+     * @return the content type of the requested file as String
+     */
+    public String getContentType() {
         URI requestedUri = requestedFile.toURI();
         Path requestedPath = Paths.get(requestedUri);
         String contentType = null;
@@ -41,6 +50,11 @@ public class RequestedFile {
         return contentType;
     }
 
+    /**
+     * Gets the file input stream for the file
+     *
+     * @return the file input stream
+     */
     private FileInputStream getFileInputStream() {
         FileInputStream fileInputStream = null;
         try {
@@ -52,6 +66,11 @@ public class RequestedFile {
         return fileInputStream;
     }
 
+    /**
+     * Reads the requested file and converts it to an array of bytes
+     *
+     * @param requestedFileBytes the byte array to fill
+     */
     private void readFile(byte[] requestedFileBytes) {
         FileInputStream fileInputStream = getFileInputStream();
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
@@ -63,6 +82,11 @@ public class RequestedFile {
         }
     }
 
+    /**
+     * Returns the bytes of the file as array.
+     *
+     * @return a byte array containing the bytes of the file.
+     */
     public byte[] getBytes() {
         byte[] requestedFileBytes = new byte[(int) requestedFile.length()];
         readFile(requestedFileBytes);
@@ -71,8 +95,6 @@ public class RequestedFile {
 
     /**
      * Checks if a file is a directory and redirects to an index.html if true
-     *
-     * @return the redirected file. If the original file was not a file it is returned without being changed.
      */
     private void redirectToIndex() {
         if (requestedFile.isDirectory()) {
@@ -81,7 +103,12 @@ public class RequestedFile {
 
     }
 
-    public boolean exists(){
+    /**
+     * Checks whether or not the file does exist in the file system
+     *
+     * @return true if the file exists, otherwise false.
+     */
+    public boolean exists() {
         return requestedFile.exists();
     }
 }

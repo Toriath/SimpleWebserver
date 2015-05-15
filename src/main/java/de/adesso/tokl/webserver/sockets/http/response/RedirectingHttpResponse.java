@@ -10,6 +10,11 @@ public class RedirectingHttpResponse extends HttpResponse {
 
     private final String redirectUrl;
 
+    /**
+     * Creates a response to redirect the requesting client to another url
+     * @param socket the socket to respond to
+     * @param redirectUrl the Url to redirect to
+     */
     public RedirectingHttpResponse(Socket socket, String redirectUrl) {
         super(socket);
         this.redirectUrl = redirectUrl;

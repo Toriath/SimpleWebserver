@@ -3,7 +3,6 @@ package de.adesso.tokl.webserver.sockets.http.response;
 import de.adesso.tokl.webserver.sockets.http.request.RequestedFile;
 import lombok.extern.log4j.Log4j2;
 
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Date;
 
@@ -16,6 +15,11 @@ public class FileHttpResponse extends HttpResponse {
 
     private final RequestedFile requestedFile;
 
+    /**
+     * Consructs a HttpResponse which response data is a file.
+     * @param socket the socket to respond to
+     * @param requestedFile the file being requested.
+     */
     public FileHttpResponse(Socket socket, RequestedFile requestedFile) {
         super(socket);
         this.requestedFile = requestedFile;

@@ -62,6 +62,11 @@ class Connection implements Runnable {
         }
     }
 
+    /**
+     * Chooses how to respond to a given request
+     * @param httpRequest The request to answer
+     * @return An HttpResponse Subclass that provides the correct type of response
+     */
     private HttpResponse chooseResponseType(HttpRequest httpRequest) {
 
         String uri = httpRequest.getUri();
@@ -77,10 +82,20 @@ class Connection implements Runnable {
 
     }
 
+    /**
+     * Gets the new URL for a redirect
+     * @param uri the URI being called
+     * @return the URL the uri is redirected to
+     */
     private String getRedirect(String uri) {
         return redirects.get(uri);
     }
 
+    /**
+     * Checks if a given uri is a redirect or not
+     * @param uri the uri to check
+     * @return true if the uri should be redirected, otherwise false
+     */
     private boolean isRedirect(String uri) {
         return redirects.containsKey(uri);
     }
