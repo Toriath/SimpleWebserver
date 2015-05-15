@@ -75,7 +75,7 @@ public class RequestedFile {
         FileInputStream fileInputStream = getFileInputStream();
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
         try {
-            bufferedInputStream.read(requestedFileBytes, 0, requestedFileBytes.length);
+          bufferedInputStream.read(requestedFileBytes, 0, requestedFileBytes.length);
             bufferedInputStream.close();
         } catch (IOException e) {
             log.catching(e);
