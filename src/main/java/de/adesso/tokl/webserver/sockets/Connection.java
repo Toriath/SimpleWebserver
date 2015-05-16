@@ -6,8 +6,7 @@ import de.adesso.tokl.webserver.sockets.http.request.RequestedFile;
 import de.adesso.tokl.webserver.sockets.http.response.FileHttpResponse;
 import de.adesso.tokl.webserver.sockets.http.response.HttpResponse;
 import de.adesso.tokl.webserver.sockets.http.response.RedirectingHttpResponse;
-import de.adesso.tokl.webserver.sockets.http.response.error.Error404HttpResponse;
-import de.adesso.tokl.webserver.sockets.http.response.error.Error500HttpResponse;
+import de.adesso.tokl.webserver.sockets.http.response.error.ErrorHttpResponse;
 import lombok.extern.log4j.Log4j2;
 
 import java.io.IOException;
@@ -50,10 +49,10 @@ class Connection implements Runnable {
         } catch (InternalServerErrorException e) {
             log.catching(e);
             log.error("Internal Server error");
-            response = new Error500HttpResponse(socket);
+            response = ErrorHttpResponse.createError500(socket);
         } finally {
             if (response == null) {
-                response = new Error500HttpResponse(socket);
+                response = ErrorHttpResponse.createError500(socket);
             }
             response.sendResponse();
         }
@@ -82,7 +81,7 @@ class Connection implements Runnable {
         } else if (requestedFile.exists()) {
             return new FileHttpResponse(socket, requestedFile);
         } else {
-            return new Error404HttpResponse(socket);
+            return ErrorHttpResponse.createError404(socket);
         }
 
     }

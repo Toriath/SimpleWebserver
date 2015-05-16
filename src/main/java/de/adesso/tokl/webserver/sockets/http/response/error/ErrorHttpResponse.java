@@ -7,7 +7,7 @@ import java.net.Socket;
 /**
  * Created by kloss on 13.05.2015.
  */
-public abstract class ErrorHttpResponse extends HttpResponse {
+public  class ErrorHttpResponse extends HttpResponse {
 
     private final String errorMessage;
     private final String statusCode;
@@ -27,6 +27,13 @@ public abstract class ErrorHttpResponse extends HttpResponse {
 
     }
 
+    public static ErrorHttpResponse createError404(Socket socket) {
+        return new ErrorHttpResponse(socket, "404 File Not Found", "<h1>ERROR 404 - File Not Found!</h1>");
+
+    }
+    public static ErrorHttpResponse createError500 (Socket socket) {
+        return new ErrorHttpResponse(socket, "500 Internal Server Error", "<h1>ERROR 500 - Internal Server Error</h1>");
+    }
 
     @Override
     protected byte[] getDataBytes() {
