@@ -19,7 +19,7 @@ public  class ErrorHttpResponse extends HttpResponse {
      * @param errorCode The error code in the format "000 message..."
      * @param errorMessage The Message shown to the user
      */
-    public ErrorHttpResponse(Socket socket, String errorCode, String errorMessage) {
+    private ErrorHttpResponse(Socket socket, String errorCode, String errorMessage) {
         super(socket);
         this.errorMessage = errorMessage;
         this.statusCode = "HTTP/1.1 " + errorCode + "\r\n";
@@ -27,10 +27,21 @@ public  class ErrorHttpResponse extends HttpResponse {
 
     }
 
+    /**
+     * Creates an Instance of this class representing a 404 Error
+     * @param socket the socket this Error will be send to
+     * @return the ErrorHttpResponse instance
+     */
     public static ErrorHttpResponse createError404(Socket socket) {
         return new ErrorHttpResponse(socket, "404 File Not Found", "<h1>ERROR 404 - File Not Found!</h1>");
 
     }
+
+    /**
+     * Creates an Instance of this class representing a 500 Error
+     * @param socket the socket this Error will be send to
+     * @return the ErrorHttpResponse instance
+     */
     public static ErrorHttpResponse createError500 (Socket socket) {
         return new ErrorHttpResponse(socket, "500 Internal Server Error", "<h1>ERROR 500 - Internal Server Error</h1>");
     }
